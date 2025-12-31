@@ -8,7 +8,11 @@
       "Bash(cat:*)",
       "Bash(npm run build:*)",
       "Bash(mkdir:*)",
-      "mcp__playwright__browser_navigate"
+      "mcp__playwright__browser_navigate",
+      "Bash(git add:*)",
+      "Bash(git commit:*)",
+      "Bash(git push:*)",
+      "Bash(rm:*)"
     ]
   },
   "model": "opus",
