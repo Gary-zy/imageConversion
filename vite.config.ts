@@ -1,13 +1,31 @@
 import { defineConfig } from 'vite';
 import vue from '@vitejs/plugin-vue';
+import tailwindcss from 'tailwindcss';
+import autoprefixer from 'autoprefixer';
 
 // https://vitejs.dev/config/
 export default defineConfig({
-  plugins: [vue()],
+  plugins: [
+    vue(),
+    tailwindcss({
+      config: './tailwind.config.js',
+    }),
+  ],
 
   resolve: {
     alias: {
       '@': '/src',
+    },
+  },
+
+  css: {
+    postcss: {
+      plugins: [
+        tailwindcss({
+          config: './tailwind.config.js',
+        }),
+        autoprefixer(),
+      ],
     },
   },
 
@@ -65,7 +83,6 @@ export default defineConfig({
     // 预构建依赖
     include: [
       'vue',
-      'zustand',
       'jszip',
       'jspdf',
       'file-saver',

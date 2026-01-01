@@ -85,7 +85,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref, computed, watch, onMounted, onUnmounted } from 'vue';
+import { ref, computed, watch, onUpdated, onMounted, onUnmounted, nextTick, toRef } from 'vue';
 
 // OfdConverter 的公共接口
 interface OfdConverterInterface {
@@ -129,6 +129,10 @@ const renderDocument = async () => {
   error.value = null;
 
   try {
+    // 等待 DOM 更新完成后再渲染
+    await nextTick();
+    // 再等待一帧确保容器已完全布局
+    await new Promise(resolve => requestAnimationFrame(resolve));
     await props.converter.renderToContainer(containerRef.value, props.currentPage, props.scale);
   } catch (err) {
     console.error('OFD 渲染失败:', err);
@@ -138,16 +142,65 @@ const renderDocument = async () => {
   }
 };
 
+// 使用 toRef 创建对 converter 的响应式引用
+const converterRef = toRef(props, 'converter');
+
+// 当 converter 变化时，重置渲染状态
+watch(converterRef, () => {
+  hasRendered.value = false;
+});
+
 // 当 converter 或页面变化时重新渲染
 watch(
-  () => [props.converter, props.currentPage, props.scale],
-  () => {
-    if (props.converter) {
+  [converterRef, () => props.currentPage, () => props.scale],
+  async ([newConverter, newPage, newScale]) => {
+    if (newConverter && containerRef.value) {
       renderDocument();
+    } else if (newConverter && !containerRef.value) {
+      // 等待容器准备好后再渲染
+      await nextTick();
+      await new Promise(resolve => requestAnimationFrame(resolve));
+      if (containerRef.value) {
+        renderDocument();
+      }
     }
-  },
-  { immediate: true }
+  }
 );
+
+// 监听 converter 变化，当容器准备好时渲染（仅渲染一次）
+const hasRendered = ref(false);
+
+onUpdated(() => {
+  if (props.converter && containerRef.value && !hasRendered.value) {
+    renderDocument();
+    hasRendered.value = true;
+  }
+});
+
+// 使用 setInterval 定期检查并渲染（解决 watch 不触发的问题）
+let renderInterval: ReturnType<typeof setInterval> | null = null;
+
+onMounted(() => {
+  // 启动定时检查 - 当 watch 无法检测 prop 变化时作为备用方案
+  renderInterval = setInterval(() => {
+    if (props.converter && containerRef.value && !isLoading.value && !hasRendered.value) {
+      renderDocument();
+      hasRendered.value = true;
+      // 渲染成功后清除定时器
+      if (renderInterval) {
+        clearInterval(renderInterval);
+        renderInterval = null;
+      }
+    }
+  }, 100);
+});
+
+onUnmounted(() => {
+  if (renderInterval) {
+    clearInterval(renderInterval);
+    renderInterval = null;
+  }
+});
 
 // 监听页面变化事件
 const handlePageChange = () => {
