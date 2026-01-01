@@ -23,7 +23,12 @@
       "Bash(pnpm playwright install:*)",
       "Bash(pnpm remove:*)",
       "Bash(curl -s http://localhost:3000)",
-      "Bash(npx playwright install:*)"
+      "Bash(npx playwright install:*)",
+      "Bash(head:*)",
+      "Bash(curl:*)",
+      "Bash(grep:*)",
+      "Bash(npx tailwindcss:*)",
+      "Bash(npm ls:*)"
     ]
   },
   "model": "opus",
