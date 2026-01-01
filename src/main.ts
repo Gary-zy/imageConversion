@@ -1,28 +1,21 @@
 /**
- * 主入口文件
- * 配置初始化
+ * Vue 入口文件
  */
 
-import { StrictMode } from 'react';
-import { createRoot } from 'react-dom/client';
-import App from './App';
+import { createApp } from 'vue';
+import App from './App.vue';
 import './index.css';
 
 // 初始化应用
 async function initApp() {
   try {
-    // 启动应用
     const rootElement = document.getElementById('root');
     if (!rootElement) {
       throw new Error('找不到根元素');
     }
 
-    const root = createRoot(rootElement);
-    root.render(
-      <StrictMode>
-        <App />
-      </StrictMode>
-    );
+    const app = createApp(App);
+    app.mount(rootElement);
 
     console.log('应用启动成功');
   } catch (error) {

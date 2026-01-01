@@ -935,7 +935,6 @@ async function convertToPcx(canvas: HTMLCanvasElement): Promise<Blob> {
 
   const buffer = new ArrayBuffer(totalSize);
   const view = new DataView(buffer);
-  const bytes = new Uint8Array(buffer);
 
   let offset = 0;
 
@@ -1034,14 +1033,12 @@ async function convertToWbmp(canvas: HTMLCanvasElement): Promise<Blob> {
 
   // WBMP 是单色位图格式
   const headerSize = 3; // Type (0) + Fixed (0) + Width (varint) + Height (varint)
-  const rowPadding = (8 - (canvas.width % 8)) % 8;
   const rowBytes = Math.ceil(canvas.width / 8);
   const imageDataSize = rowBytes * canvas.height;
   const totalSize = headerSize + varintLength(canvas.width) + varintLength(canvas.height) + imageDataSize;
 
   const buffer = new ArrayBuffer(totalSize);
   const view = new DataView(buffer);
-  const bytes = new Uint8Array(buffer);
 
   let offset = 0;
 
@@ -1130,9 +1127,8 @@ async function convertToQoi(canvas: HTMLCanvasElement): Promise<Blob> {
         continue;
       }
 
-      if (dr >= -2 && dr <= 1 && dg >= -2 && dg <= 1 && db >= -2 && db <= 1) {
+      if (dr >= -2 && dr <= 1 && dg >= -2 && dg <= 1) {
         // QOI_OP_LUMA: 亮度差异编码
-        const luma = (dg - 4) * 8 + dg;
         bytes[offset++] = 0x80 | (dg + 32);
         bytes[offset++] = (dr - dg + 8);
         bytes[offset++] = (db - dg + 8);

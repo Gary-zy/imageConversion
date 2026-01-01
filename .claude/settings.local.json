@@ -12,7 +12,18 @@
       "Bash(git add:*)",
       "Bash(git commit:*)",
       "Bash(git push:*)",
-      "Bash(rm:*)"
+      "Bash(rm:*)",
+      "Bash(pnpm install)",
+      "Bash(pnpm build)",
+      "Bash(pnpm add:*)",
+      "Bash(pnpm store prune)",
+      "Bash(pnpm vite:*)",
+      "Bash(timeout:*)",
+      "Bash(node:*)",
+      "Bash(pnpm playwright install:*)",
+      "Bash(pnpm remove:*)",
+      "Bash(curl -s http://localhost:3000)",
+      "Bash(npx playwright install:*)"
     ]
   },
   "model": "opus",

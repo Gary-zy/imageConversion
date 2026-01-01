@@ -200,7 +200,7 @@ export interface FormatInfo {
   mimeType: string;
   extension: string;
   supportsQuality: boolean;
-  category: 'common' | 'modern' | 'document' | 'icon' | 'legacy';
+  category: 'common' | 'modern' | 'document' | 'icon' | 'legacy' | 'netpbm' | 'other' | 'raw';
   description?: string;
 }
 

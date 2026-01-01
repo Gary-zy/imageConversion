@@ -1,9 +1,9 @@
 import { defineConfig } from 'vite';
-import react from '@vitejs/plugin-react';
+import vue from '@vitejs/plugin-vue';
 
 // https://vitejs.dev/config/
 export default defineConfig({
-  plugins: [react()],
+  plugins: [vue()],
 
   resolve: {
     alias: {
@@ -19,14 +19,6 @@ export default defineConfig({
     // 构建策略优化
     rollupOptions: {
       output: {
-        // 代码分割
-        manualChunks: {
-          // 第三方库分离
-          'vendor-react': ['react', 'react-dom', 'react-dom/client'],
-          'vendor-utils': ['zustand', 'jszip', 'jspdf', 'file-saver'],
-          'vendor-pica': ['pica'],
-        },
-
         // 分块命名
         chunkFileNames: 'js/[name]-[hash].js',
         entryFileNames: 'js/[name]-[hash].js',
@@ -72,8 +64,7 @@ export default defineConfig({
   optimizeDeps: {
     // 预构建依赖
     include: [
-      'react',
-      'react-dom',
+      'vue',
       'zustand',
       'jszip',
       'jspdf',
