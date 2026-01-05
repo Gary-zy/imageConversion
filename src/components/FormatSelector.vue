@@ -1,72 +1,116 @@
 <template>
-  <div class="space-y-3">
-    <div class="flex items-center justify-between mb-3">
-      <h2 class="text-sm font-medium text-gray-700">选择目标格式</h2>
-      <span class="text-xs text-gray-400">
-        当前: {{ FORMAT_OPTIONS.find(f => f.value === targetFormat)?.label }}
-      </span>
+  <div class="bg-white rounded-xl border border-gray-200 shadow-sm">
+    <!-- 标题栏 -->
+    <div class="px-5 py-4 border-b border-gray-100 flex items-center justify-between">
+      <h3 class="font-medium text-gray-800">输出格式</h3>
+      <div class="flex items-center gap-2 text-sm text-gray-500">
+        <span class="w-1.5 h-1.5 rounded-full bg-blue-500"></span>
+        {{ currentFormat?.label }}
+      </div>
     </div>
 
-    <!-- 分类标签 -->
-    <div class="flex flex-wrap gap-2 mb-3">
-      <button
-        v-for="([key, category]) in Object.entries(FORMAT_CATEGORIES)"
-        :key="key"
-        @click="expandedCategory = key"
-        :class="[
-          'px-3 py-1.5 rounded-lg text-xs font-medium transition-all duration-200',
-          'flex items-center gap-1.5',
-          expandedCategory === key
-            ? 'bg-gradient-to-r from-primary-500 to-primary-600 text-white shadow-md'
-            : 'bg-white text-gray-600 border border-gray-200 hover:border-gray-300'
-        ]"
-      >
-        <span>{{ categoryIcons[key] }}</span>
-        <span>{{ category.name }}</span>
-      </button>
-    </div>
-
-    <!-- 格式按钮网格 -->
-    <div class="bg-white rounded-xl border border-gray-200 p-4">
-      <div class="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-5 gap-2">
+    <div class="p-5">
+      <!-- 常用格式 -->
+      <div class="grid grid-cols-4 gap-3">
         <button
-          v-for="format in FORMAT_OPTIONS.filter(f => f.category === expandedCategory)"
+          v-for="format in commonFormats"
           :key="format.value"
           @click="setTargetFormat(format.value as ImageFormat)"
           :class="[
-            'relative px-3 py-3 rounded-lg font-medium transition-all duration-200',
-            'flex flex-col items-center gap-1',
+            'group relative py-4 rounded-xl border transition-all',
             targetFormat === format.value
-              ? 'bg-gradient-to-r from-primary-500 to-primary-600 text-white shadow-lg shadow-primary-500/30 transform scale-105'
-              : 'bg-gray-50 text-gray-700 hover:bg-gray-100 hover:shadow-sm'
+              ? 'border-blue-200 bg-gradient-to-b from-blue-50 to-white shadow-sm'
+              : 'border-gray-100 bg-gray-50/50 hover:bg-white hover:border-gray-200 hover:shadow-sm'
           ]"
         >
-          <span class="text-lg">{{ format.label }}</span>
-          <span :class="['text-xs', targetFormat === format.value ? 'text-white/80' : 'text-gray-400']">
-            {{ format.extension.toUpperCase() }}
-          </span>
-
-          <!-- 选中指示器 -->
-          <div v-if="targetFormat === format.value" class="absolute -top-1 -right-1 w-4 h-4 bg-white rounded-full flex items-center justify-center shadow">
-            <svg class="w-3 h-3 text-primary-500" fill="currentColor" viewBox="0 0 20 20">
-              <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd" />
+          <div class="text-center">
+            <p :class="[
+              'font-semibold',
+              targetFormat === format.value ? 'text-blue-600' : 'text-gray-700'
+            ]">
+              {{ format.label }}
+            </p>
+            <p :class="[
+              'text-xs mt-0.5',
+              targetFormat === format.value ? 'text-blue-400' : 'text-gray-400'
+            ]">
+              .{{ format.extension }}
+            </p>
+          </div>
+          <!-- 选中指示 -->
+          <div
+            v-if="targetFormat === format.value"
+            class="absolute -top-1 -right-1 w-5 h-5 bg-blue-500 rounded-full flex items-center justify-center shadow-sm"
+          >
+            <svg class="w-3 h-3 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M5 13l4 4L19 7" />
             </svg>
           </div>
         </button>
       </div>
 
-      <!-- 格式说明 -->
+      <!-- 更多格式 -->
       <div class="mt-4 pt-4 border-t border-gray-100">
-        <div class="flex items-start gap-3">
-          <div class="w-8 h-8 rounded-lg bg-primary-100 flex items-center justify-center flex-shrink-0">
-            <svg class="w-4 h-4 text-primary-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
-            </svg>
+        <button
+          @click="showMore = !showMore"
+          class="flex items-center gap-2 px-3 py-1.5 text-sm text-gray-500 hover:text-gray-700 bg-gray-50 hover:bg-gray-100 rounded-lg border border-gray-200 transition-all"
+        >
+          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h7" />
+          </svg>
+          <span>更多格式</span>
+          <svg
+            :class="['w-4 h-4 transition-transform', showMore ? 'rotate-180' : '']"
+            fill="none"
+            stroke="currentColor"
+            viewBox="0 0 24 24"
+          >
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+          </svg>
+        </button>
+
+        <!-- 展开的格式列表 -->
+        <div
+          v-show="showMore"
+          class="mt-4 space-y-4"
+        >
+          <div v-for="(formats, category) in groupedFormats" :key="category">
+            <p class="text-xs text-gray-400 mb-2">{{ categoryNames[category] }}</p>
+            <div class="flex flex-wrap gap-2">
+              <button
+                v-for="format in formats"
+                :key="format.value"
+                @click="setTargetFormat(format.value as ImageFormat)"
+                :class="[
+                  'px-3 py-1.5 text-sm rounded-lg border transition-all',
+                  targetFormat === format.value
+                    ? 'border-blue-200 bg-blue-50 text-blue-600'
+                    : 'border-gray-200 bg-white text-gray-600 hover:border-gray-300 hover:bg-gray-50'
+                ]"
+              >
+                {{ format.label }}
+              </button>
+            </div>
           </div>
-          <div>
-            <p class="text-sm font-medium text-gray-800">{{ currentFormat?.label }}</p>
-            <p class="text-xs text-gray-500 mt-0.5">{{ currentFormat?.description }}</p>
-            <p v-if="currentFormat?.supportsQuality" class="text-xs text-primary-600 mt-1">支持质量调整</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- 格式说明 -->
+    <div v-if="currentFormat" class="px-5 py-4 bg-gray-50/50 border-t border-gray-100">
+      <div class="flex items-center gap-3">
+        <div class="w-9 h-9 rounded-lg bg-white border border-gray-200 flex items-center justify-center shadow-sm">
+          <span class="text-xs font-bold text-gray-500">{{ currentFormat.extension.toUpperCase().slice(0, 3) }}</span>
+        </div>
+        <div class="flex-1">
+          <p class="text-sm text-gray-600">{{ currentFormat.description }}</p>
+          <div class="flex items-center gap-3 mt-1">
+            <span v-if="currentFormat.supportsQuality" class="text-xs text-gray-400">
+              ✓ 质量可调
+            </span>
+            <span v-if="supportsTransparency" class="text-xs text-gray-400">
+              ✓ 支持透明
+            </span>
           </div>
         </div>
       </div>
@@ -77,23 +121,46 @@
 <script setup lang="ts">
 import { ref, computed, toRef } from 'vue';
 import { useImageStore } from '../stores/imageStore';
-import { FORMAT_OPTIONS, FORMAT_CATEGORIES, ImageFormat } from '../types';
+import { FORMAT_OPTIONS, ImageFormat } from '../types';
 
 const store = useImageStore();
 const setTargetFormat = store.setTargetFormat.bind(store);
-
-// 使用 toRef 创建正确的响应式引用
 const targetFormat = toRef(store, 'targetFormat');
 
-const expandedCategory = ref<string>('common');
+const showMore = ref(false);
 
-const categoryIcons: Record<string, string> = {
-  common: '🖼️',
-  modern: '⚡',
-  document: '📄',
-  icon: '🔖',
-  legacy: '📦',
+// 常用格式
+const commonFormats = computed(() => 
+  FORMAT_OPTIONS.filter(f => ['jpeg', 'png', 'webp', 'gif'].includes(f.value))
+);
+
+// 其他格式按分类分组
+const groupedFormats = computed(() => {
+  const others = FORMAT_OPTIONS.filter(f => !['jpeg', 'png', 'webp', 'gif'].includes(f.value));
+  const groups: Record<string, typeof FORMAT_OPTIONS> = {};
+  
+  others.forEach(format => {
+    const cat = format.category || 'other';
+    if (!groups[cat]) groups[cat] = [];
+    groups[cat].push(format);
+  });
+  
+  return groups;
+});
+
+const categoryNames: Record<string, string> = {
+  modern: '现代格式',
+  document: '文档格式',
+  icon: '图标格式',
+  legacy: '传统格式',
+  other: '其他',
 };
 
 const currentFormat = computed(() => FORMAT_OPTIONS.find(f => f.value === targetFormat.value));
+
+// 判断当前格式是否支持透明度
+const supportsTransparency = computed(() => {
+  const transparentFormats = ['png', 'webp', 'gif', 'avif', 'heif', 'heic', 'ico', 'icns', 'tiff'];
+  return transparentFormats.includes(targetFormat.value);
+});
 </script>

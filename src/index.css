@@ -8,7 +8,9 @@
   box-sizing: border-box;
 }
 
-html, body, #root {
+html,
+body,
+#root {
   height: 100%;
 }
 
@@ -74,19 +76,33 @@ html.dark .border-gray-300 {
   border-color: #4b5563 !important;
 }
 
-/* Scrollbar styling for dark mode */
-html.dark ::-webkit-scrollbar {
-  width: 8px;
-  height: 8px;
+/* Scrollbar styling */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
 }
 
-html.dark ::-webkit-scrollbar-track {
-  background: #1f2937;
+::-webkit-scrollbar-track {
+  background: transparent;
 }
 
+::-webkit-scrollbar-thumb {
+  background: #d1d5db;
+  border-radius: 3px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #9ca3af;
+}
+
+/* 横向滚动条更细 */
+::-webkit-scrollbar:horizontal {
+  height: 4px;
+}
+
+/* Dark mode scrollbar */
 html.dark ::-webkit-scrollbar-thumb {
   background: #4b5563;
-  border-radius: 4px;
 }
 
 html.dark ::-webkit-scrollbar-thumb:hover {
@@ -144,7 +160,25 @@ html.dark .shadow-lg {
 
 /* Transition for theme change */
 * {
-  transition-property: background-color, border-color, color, fill, stroke;
-  transition-duration: 150ms;
+  transition-property: background-color, border-color, color, fill, stroke, opacity, box-shadow, transform;
+  transition-duration: 200ms;
   transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* 排除一些不需要动画的元素 */
+input[type="range"],
+input[type="range"]::-webkit-slider-thumb,
+.no-transition {
+  transition: none;
+}
+
+
+/* 隐藏滚动条但保留滚动功能 */
+.scrollbar-hide {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+.scrollbar-hide::-webkit-scrollbar {
+  display: none;
 }

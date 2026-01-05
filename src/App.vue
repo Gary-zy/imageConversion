@@ -135,6 +135,7 @@ const shortcuts = [
   { key: 'Ctrl + H', action: '历史记录', description: '打开/关闭转换历史' },
   { key: 'Ctrl + /', action: '快捷键帮助', description: '显示快捷键列表' },
   { key: 'D', action: '切换主题', description: '切换深色/浅色模式' },
+  { key: '点击图标', action: 'GitHub', description: '访问项目仓库，欢迎 Star ⭐' },
 ];
 </script>
 
@@ -199,16 +200,13 @@ const shortcuts = [
             </button>
           </div>
 
-          <!-- 功能特性标签 -->
-          <div class="hidden md:flex items-center gap-2">
-            <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-medium bg-green-100 text-green-700 dark:bg-green-900/30 dark:text-green-400">
-              <span class="w-1.5 h-1.5 bg-green-500 rounded-full"></span>
-              免费使用
-            </span>
-            <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-medium bg-blue-100 text-blue-700 dark:bg-blue-900/30 dark:text-blue-400">
-              <span class="w-1.5 h-1.5 bg-blue-500 rounded-full"></span>
-              无需上传
-            </span>
+          <!-- 功能特性标签 - 简化 -->
+          <div class="hidden md:flex items-center gap-3 text-xs text-gray-400">
+            <span>免费</span>
+            <span>·</span>
+            <span>本地处理</span>
+            <span>·</span>
+            <span>开源</span>
           </div>
 
           <!-- 工具按钮 -->
@@ -216,7 +214,7 @@ const shortcuts = [
             <!-- 快捷键按钮 -->
             <button
               @click="showShortcuts = true"
-              class="p-2 text-gray-500 hover:text-gray-700 hover:bg-gray-100 rounded-lg transition-colors"
+              class="p-2 text-gray-500 hover:text-gray-700 hover:bg-gray-100 dark:text-gray-400 dark:hover:text-gray-200 dark:hover:bg-gray-700 rounded-lg transition-colors"
               title="快捷键 (Ctrl + /)"
             >
               <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -227,7 +225,7 @@ const shortcuts = [
             <!-- 历史记录按钮 -->
             <button
               @click="showHistory = true"
-              class="p-2 text-gray-500 hover:text-gray-700 hover:bg-gray-100 rounded-lg transition-colors relative"
+              class="p-2 text-gray-500 hover:text-gray-700 hover:bg-gray-100 dark:text-gray-400 dark:hover:text-gray-200 dark:hover:bg-gray-700 rounded-lg transition-colors relative"
               title="历史记录 (Ctrl + H)"
             >
               <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -238,10 +236,23 @@ const shortcuts = [
               </span>
             </button>
 
+            <!-- GitHub 链接 -->
+            <a
+              href="https://github.com/Gary-zy/imageConversion"
+              target="_blank"
+              rel="noopener noreferrer"
+              class="p-2 text-gray-500 hover:text-gray-700 hover:bg-gray-100 dark:text-gray-400 dark:hover:text-gray-200 dark:hover:bg-gray-700 rounded-lg transition-colors"
+              title="GitHub 仓库 - 欢迎 Star ⭐"
+            >
+              <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
+                <path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/>
+              </svg>
+            </a>
+
             <!-- 深色模式切换 -->
             <button
               @click="toggleDarkMode"
-              class="p-2 text-gray-500 hover:text-gray-700 hover:bg-gray-100 rounded-lg transition-colors"
+              class="p-2 text-gray-500 hover:text-gray-700 hover:bg-gray-100 dark:text-gray-400 dark:hover:text-gray-200 dark:hover:bg-gray-700 rounded-lg transition-colors"
               title="切换深色模式 (D)"
             >
               <svg v-if="isDarkMode" class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -423,21 +434,12 @@ const shortcuts = [
       </template>
     </main>
 
-    <!-- Footer -->
-    <footer class="border-t border-gray-200/50 bg-white/50 backdrop-blur-sm mt-12 dark:border-gray-700/50 dark:bg-gray-800/50">
-      <div class="max-w-7xl mx-auto px-4 py-6 sm:px-6 lg:px-8">
-        <div class="flex flex-wrap items-center justify-center gap-4 text-sm text-gray-500 dark:text-gray-400">
-          <span class="flex items-center gap-1">
-            <svg class="w-4 h-4 text-green-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
-            </svg>
-            隐私保护
-          </span>
-          <span class="text-gray-300 dark:text-gray-600">|</span>
-          <span>所有图片处理均在浏览器本地完成</span>
-          <span class="text-gray-300 dark:text-gray-600">|</span>
-          <span>免费开源</span>
-        </div>
+    <!-- Footer - 简化 -->
+    <footer class="mt-16 py-6">
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <p class="text-center text-xs text-gray-400">
+          所有处理均在浏览器本地完成，不会上传任何文件
+        </p>
       </div>
     </footer>
 
@@ -445,24 +447,24 @@ const shortcuts = [
     <Teleport to="body">
       <div v-if="showHistory" class="fixed inset-0 z-50 flex items-center justify-center p-4">
         <!-- 遮罩层 -->
-        <div class="absolute inset-0 bg-black/50" @click="showHistory = false"></div>
+        <div class="absolute inset-0 bg-black/50 backdrop-blur-sm" @click="showHistory = false"></div>
 
         <!-- 弹窗内容 -->
-        <div class="relative bg-white rounded-2xl shadow-2xl max-w-2xl w-full max-h-[80vh] overflow-hidden dark:bg-gray-800">
+        <div class="relative bg-white dark:bg-gray-800 rounded-2xl shadow-2xl max-w-2xl w-full max-h-[80vh] overflow-hidden border border-gray-200 dark:border-gray-700">
           <!-- 头部 -->
-          <div class="flex items-center justify-between px-6 py-4 border-b border-gray-200 dark:border-gray-700">
+          <div class="flex items-center justify-between px-6 py-4 border-b border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-gray-800/80">
             <h3 class="text-lg font-semibold text-gray-800 dark:text-white">转换历史</h3>
             <div class="flex items-center gap-2">
               <button
                 v-if="history.length > 0"
                 @click="clearHistory"
-                class="px-3 py-1 text-sm text-red-500 hover:bg-red-50 rounded-lg transition-colors"
+                class="px-3 py-1 text-sm text-red-500 hover:bg-red-50 dark:hover:bg-red-900/20 rounded-lg transition-colors"
               >
                 清空
               </button>
               <button
                 @click="showHistory = false"
-                class="p-2 text-gray-400 hover:text-gray-600 hover:bg-gray-100 rounded-lg transition-colors"
+                class="p-2 text-gray-400 hover:text-gray-600 dark:hover:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-lg transition-colors"
               >
                 <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
@@ -473,8 +475,8 @@ const shortcuts = [
 
           <!-- 历史列表 -->
           <div class="overflow-y-auto max-h-[60vh]">
-            <div v-if="history.length === 0" class="py-12 text-center text-gray-500">
-              <svg class="w-12 h-12 mx-auto mb-4 text-gray-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <div v-if="history.length === 0" class="py-12 text-center text-gray-500 dark:text-gray-400">
+              <svg class="w-12 h-12 mx-auto mb-4 text-gray-300 dark:text-gray-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
               </svg>
               <p>暂无转换记录</p>
@@ -490,13 +492,13 @@ const shortcuts = [
                 <div class="flex items-center justify-between">
                   <div class="flex-1 min-w-0">
                     <p class="font-medium text-gray-800 dark:text-white truncate">{{ item.originalName }}</p>
-                    <div class="flex items-center gap-3 mt-1 text-sm text-gray-500">
+                    <div class="flex items-center gap-3 mt-1 text-sm text-gray-500 dark:text-gray-400">
                       <span>{{ item.targetFormat.toUpperCase() }}</span>
                       <span>{{ formatTime(item.timestamp) }}</span>
                     </div>
                   </div>
                   <div class="flex items-center gap-4 text-sm">
-                    <span class="text-gray-500">
+                    <span class="text-gray-500 dark:text-gray-400">
                       {{ formatFileSize(item.originalSize) }} → {{ formatFileSize(item.convertedSize) }}
                     </span>
                     <button
@@ -521,16 +523,16 @@ const shortcuts = [
     <Teleport to="body">
       <div v-if="showShortcuts" class="fixed inset-0 z-50 flex items-center justify-center p-4">
         <!-- 遮罩层 -->
-        <div class="absolute inset-0 bg-black/50" @click="showShortcuts = false"></div>
+        <div class="absolute inset-0 bg-black/50 backdrop-blur-sm" @click="showShortcuts = false"></div>
 
         <!-- 弹窗内容 -->
-        <div class="relative bg-white rounded-2xl shadow-2xl max-w-md w-full overflow-hidden dark:bg-gray-800">
+        <div class="relative bg-white dark:bg-gray-800 rounded-2xl shadow-2xl max-w-md w-full overflow-hidden border border-gray-200 dark:border-gray-700">
           <!-- 头部 -->
-          <div class="flex items-center justify-between px-6 py-4 border-b border-gray-200 dark:border-gray-700">
+          <div class="flex items-center justify-between px-6 py-4 border-b border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-gray-800/80">
             <h3 class="text-lg font-semibold text-gray-800 dark:text-white">键盘快捷键</h3>
             <button
               @click="showShortcuts = false"
-              class="p-2 text-gray-400 hover:text-gray-600 hover:bg-gray-100 rounded-lg transition-colors"
+              class="p-2 text-gray-400 hover:text-gray-600 dark:hover:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-lg transition-colors"
             >
               <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
@@ -547,9 +549,9 @@ const shortcuts = [
             >
               <div>
                 <p class="font-medium text-gray-800 dark:text-white">{{ shortcut.action }}</p>
-                <p class="text-sm text-gray-500">{{ shortcut.description }}</p>
+                <p class="text-sm text-gray-500 dark:text-gray-400">{{ shortcut.description }}</p>
               </div>
-              <kbd class="px-3 py-1 text-sm font-mono bg-gray-100 rounded-lg text-gray-700 dark:bg-gray-700 dark:text-gray-300">
+              <kbd class="px-3 py-1 text-sm font-mono bg-gray-100 dark:bg-gray-700 rounded-lg text-gray-700 dark:text-gray-300 border border-gray-200 dark:border-gray-600">
                 {{ shortcut.key }}
               </kbd>
             </div>
@@ -557,8 +559,8 @@ const shortcuts = [
 
           <!-- 底部提示 -->
           <div class="px-6 py-4 bg-gray-50 dark:bg-gray-700/50 border-t border-gray-100 dark:border-gray-700">
-            <p class="text-sm text-gray-500 text-center">
-              按 <kbd class="px-2 py-0.5 text-xs font-mono bg-gray-200 rounded dark:bg-gray-600">Esc</kbd> 关闭此弹窗
+            <p class="text-sm text-gray-500 dark:text-gray-400 text-center">
+              按 <kbd class="px-2 py-0.5 text-xs font-mono bg-gray-200 dark:bg-gray-600 rounded border border-gray-300 dark:border-gray-500 text-gray-700 dark:text-gray-300">Esc</kbd> 关闭此弹窗
             </p>
           </div>
         </div>
