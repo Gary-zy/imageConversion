@@ -1,5 +1,6 @@
 import Pica from 'pica';
 import jsPDF from 'jspdf';
+import piexif from 'piexifjs';
 import { ConvertOptions, FORMAT_OPTIONS } from '../types';
 
 const pica = new Pica();
@@ -19,7 +20,7 @@ const ICNS_OSTYPES: Record<number, string> = {
 };
 
 export async function convertImage(file: File, options: ConvertOptions): Promise<Blob> {
-  const { targetFormat, quality, resize, rotate, flip, flop, crop, adjustment, filter, watermark, imageWatermark, backgroundColor, iconSizes } = options;
+  const { targetFormat, quality, resize, rotate, flip, flop, crop, adjustment, filter, watermark, imageWatermark, backgroundColor, iconSizes, exif } = options;
 
   // 1. 加载原始图片
   const img = await loadImage(file);
@@ -193,13 +194,18 @@ export async function convertImage(file: File, options: ConvertOptions): Promise
     throw new Error(`不支持的格式: ${targetFormat}`);
   }
 
-  const blob = await canvasToBlob(
+  let blob = await canvasToBlob(
     resultCanvas,
     formatInfo.mimeType,
     formatInfo.supportsQuality ? quality / 100 : undefined
   );
 
-  // 14. 清理
+  // 14. 嵌入 EXIF 数据（仅 JPEG 格式）
+  if (targetFormat === 'jpeg' && exif && (exif.artist || exif.copyright || exif.software)) {
+    blob = await embedExifData(blob, exif);
+  }
+
+  // 15. 清理
   URL.revokeObjectURL(img.src);
 
   return blob;
@@ -1403,4 +1409,88 @@ async function convertToJp2(canvas: HTMLCanvasElement, quality: number): Promise
   });
 
   return jpegBlob;
+}
+
+// ========== EXIF 数据嵌入 ==========
+
+interface ExifData {
+  artist?: string;
+  copyright?: string;
+  software?: string;
+}
+
+/**
+ * 嵌入 EXIF 数据到 JPEG 图片
+ */
+async function embedExifData(blob: Blob, exifData: ExifData): Promise<Blob> {
+  const dataUrl = await blobToDataUrl(blob);
+
+  // 创建 EXIF 对象
+  const exifObj: Record<string, unknown> = {
+    '0th': {},
+    'Exif': {},
+    'GPS': {},
+    '1st': {},
+    thumbnail: null,
+  };
+
+  // 设置艺术家
+  if (exifData.artist) {
+    (exifObj['0th'] as Record<number, string>)[piexif.ImageIFD.Artist] = exifData.artist;
+  }
+
+  // 设置版权
+  if (exifData.copyright) {
+    (exifObj['0th'] as Record<number, string>)[piexif.ImageIFD.Copyright] = exifData.copyright;
+  }
+
+  // 设置软件
+  if (exifData.software) {
+    (exifObj['0th'] as Record<number, string>)[piexif.ImageIFD.Software] = exifData.software;
+  }
+
+  // 获取日期时间
+  const now = new Date();
+  const exifDate = `${now.getFullYear()}:${String(now.getMonth() + 1).padStart(2, '0')}:${String(now.getDate()).padStart(2, '0')} ${String(now.getHours()).padStart(2, '0')}:${String(now.getMinutes()).padStart(2, '0')}:${String(now.getSeconds()).padStart(2, '0')}`;
+  (exifObj['0th'] as Record<number, string>)[piexif.ImageIFD.DateTime] = exifDate;
+  (exifObj['Exif'] as Record<number, string>)[piexif.ExifIFD.DateTimeOriginal] = exifDate;
+  (exifObj['Exif'] as Record<number, string>)[piexif.ExifIFD.DateTimeDigitized] = exifDate;
+
+  // 将 EXIF 对象转换为二进制字符串
+  const exifBytes = piexif.dump(exifObj);
+
+  // 将 EXIF 插入到 JPEG 中
+  const newJpegDataUrl = piexif.insert(exifBytes, dataUrl);
+
+  // 将新的 Data URL 转换回 Blob
+  return dataUrlToBlob(newJpegDataUrl);
+}
+
+/**
+ * 将 Blob 转换为 Data URL
+ */
+function blobToDataUrl(blob: Blob): Promise<string> {
+  return new Promise((resolve, reject) => {
+    const reader = new FileReader();
+    reader.onload = () => resolve(reader.result as string);
+    reader.onerror = reject;
+    reader.readAsDataURL(blob);
+  });
+}
+
+/**
+ * 将 Data URL 转换回 Blob
+ */
+function dataUrlToBlob(dataUrl: string): Promise<Blob> {
+  return new Promise((resolve, _reject) => {
+    const arr = dataUrl.split(',');
+    const mime = arr[0].match(/:(.*?);/)?.[1] || 'image/jpeg';
+    const bstr = atob(arr[1]);
+    let n = bstr.length;
+    const u8arr = new Uint8Array(n);
+    while (n--) {
+      u8arr[n] = bstr.charCodeAt(n);
+    }
+    resolve(new Blob([u8arr], { type: mime }));
+  });
 }

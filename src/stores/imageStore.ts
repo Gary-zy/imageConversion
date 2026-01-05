@@ -1,5 +1,5 @@
 import { reactive, computed } from 'vue';
-import { ImageFile, ImageFormat, AdvancedSettings, generateId, getFormatFromMimeType } from '../types';
+import { ImageFile, ImageFormat, AdvancedSettings, generateId, getFormatFromMimeType, MAX_HISTORY_ITEMS, ThemeMode, ConversionHistory } from '../types';
 import { convertImage } from '../utils/imageConverter';
 
 interface ImageState {
@@ -7,6 +7,9 @@ interface ImageState {
   targetFormat: ImageFormat;
   settings: AdvancedSettings;
   isConverting: boolean;
+  history: ConversionHistory[];
+  theme: ThemeMode;
+  isDarkMode: boolean;
 }
 
 const defaultSettings: AdvancedSettings = {
@@ -64,6 +67,10 @@ const defaultSettings: AdvancedSettings = {
   compressionLevel: 6,
   enableDenoise: false,
   denoiseLevel: 0,
+  editExif: false,
+  exifArtist: '',
+  exifCopyright: '',
+  exifSoftware: '',
 };
 
 // 读取图片信息
@@ -89,12 +96,44 @@ async function getImageInfo(file: File): Promise<{ width: number; height: number
   });
 }
 
+// 从 localStorage 加载历史记录
+function loadHistory(): ConversionHistory[] {
+  try {
+    const saved = localStorage.getItem('conversionHistory');
+    return saved ? JSON.parse(saved) : [];
+  } catch {
+    return [];
+  }
+}
+
+// 从 localStorage 加载主题设置
+function loadTheme(): { theme: ThemeMode; isDarkMode: boolean } {
+  try {
+    const savedTheme = localStorage.getItem('theme') as ThemeMode | null;
+    const savedDarkMode = localStorage.getItem('isDarkMode');
+
+    if (savedDarkMode !== null) {
+      return { theme: savedTheme || 'auto', isDarkMode: savedDarkMode === 'true' };
+    }
+
+    // 自动检测系统主题
+    const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+    return { theme: savedTheme || 'auto', isDarkMode: savedTheme === 'dark' || (savedTheme === 'auto' && prefersDark) };
+  } catch {
+    return { theme: 'auto', isDarkMode: false };
+  }
+}
+
 // 创建响应式 store
+const initialTheme = loadTheme();
 const state = reactive<ImageState>({
   files: [],
   targetFormat: 'jpeg',
   settings: defaultSettings,
   isConverting: false,
+  history: loadHistory(),
+  theme: initialTheme.theme,
+  isDarkMode: initialTheme.isDarkMode,
 });
 
 // Actions
@@ -253,6 +292,15 @@ async function convertSingle(id: string) {
       options.backgroundColor = settings.backgroundColor;
     }
 
+    // 添加 EXIF 设置
+    if (settings.editExif && (settings.exifArtist || settings.exifCopyright || settings.exifSoftware)) {
+      options.exif = {
+        artist: settings.exifArtist,
+        copyright: settings.exifCopyright,
+        software: settings.exifSoftware,
+      };
+    }
+
     if (targetFormat === 'ico' || targetFormat === 'icns') {
       options.iconSizes = settings.iconSizes;
     }
@@ -267,6 +315,20 @@ async function convertSingle(id: string) {
       convertedSize: blob.size,
       convertedUrl,
     });
+
+    // 添加到历史记录
+    const completedFile = state.files.find((f) => f.id === id);
+    if (completedFile) {
+      addToHistory({
+        id: generateId(),
+        timestamp: Date.now(),
+        originalName: completedFile.name,
+        originalSize: completedFile.size,
+        targetFormat: targetFormat,
+        convertedSize: blob.size,
+        settings: { ...settings },
+      });
+    }
   } catch (error) {
     updateFileStatus(id, {
       status: 'failed',
@@ -306,6 +368,151 @@ async function convertAll() {
   state.isConverting = false;
 }
 
+// ========== 历史记录管理 ==========
+
+function addToHistory(entry: ConversionHistory) {
+  state.history = [entry, ...state.history].slice(0, MAX_HISTORY_ITEMS);
+  saveHistory();
+}
+
+function saveHistory() {
+  try {
+    localStorage.setItem('conversionHistory', JSON.stringify(state.history));
+  } catch (e) {
+    console.warn('Failed to save history:', e);
+  }
+}
+
+function clearHistory() {
+  state.history = [];
+  localStorage.removeItem('conversionHistory');
+}
+
+function removeHistoryItem(id: string) {
+  state.history = state.history.filter((h) => h.id !== id);
+  saveHistory();
+}
+
+// ========== 主题管理 ==========
+
+function setTheme(theme: ThemeMode) {
+  state.theme = theme;
+
+  // 根据主题设置计算实际暗色模式
+  if (theme === 'dark') {
+    state.isDarkMode = true;
+  } else if (theme === 'light') {
+    state.isDarkMode = false;
+  } else {
+    // auto 模式
+    const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+    state.isDarkMode = prefersDark;
+  }
+
+  // 保存设置
+  localStorage.setItem('theme', theme);
+  localStorage.setItem('isDarkMode', String(state.isDarkMode));
+
+  // 应用主题到 HTML 元素
+  if (typeof document !== 'undefined') {
+    document.documentElement.classList.toggle('dark', state.isDarkMode);
+  }
+}
+
+function toggleDarkMode() {
+  const newIsDark = !state.isDarkMode;
+  state.isDarkMode = newIsDark;
+  localStorage.setItem('isDarkMode', String(newIsDark));
+
+  // 根据用户手动切换来设置主题
+  if (newIsDark) {
+    state.theme = 'dark';
+    localStorage.setItem('theme', 'dark');
+  } else {
+    state.theme = 'light';
+    localStorage.setItem('theme', 'light');
+  }
+
+  if (typeof document !== 'undefined') {
+    document.documentElement.classList.toggle('dark', newIsDark);
+  }
+}
+
+// 初始化主题
+function initTheme() {
+  if (typeof document !== 'undefined') {
+    document.documentElement.classList.toggle('dark', state.isDarkMode);
+  }
+}
+
+// 监听系统主题变化
+function setupThemeListener() {
+  if (typeof window === 'undefined') return;
+
+  const mediaQuery = window.matchMedia('(prefers-color-scheme: dark)');
+  const handleChange = () => {
+    if (state.theme === 'auto') {
+      state.isDarkMode = mediaQuery.matches;
+      localStorage.setItem('isDarkMode', String(state.isDarkMode));
+      document.documentElement.classList.toggle('dark', mediaQuery.matches);
+    }
+  };
+
+  mediaQuery.addEventListener('change', handleChange);
+}
+
+// 初始化
+initTheme();
+setupThemeListener();
+
+// ========== 批量重命名 ==========
+
+function generateSequentialName(originalName: string, index: number, settings: AdvancedSettings): string {
+  const ext = originalName.split('.').pop() || '';
+  const baseName = settings.fileNamePrefix + originalName.split('.')[0] + settings.fileNameSuffix;
+  const numStr = String(index + 1).padStart(3, '0');
+  return `${baseName}_${numStr}.${ext}`;
+}
+
+function generateTimestampName(originalName: string, settings: AdvancedSettings): string {
+  const ext = originalName.split('.').pop() || '';
+  const baseName = settings.fileNamePrefix + originalName.split('.')[0] + settings.fileNameSuffix;
+  const timestamp = Date.now();
+  return `${baseName}_${timestamp}.${ext}`;
+}
+
+// ========== 快捷键处理 ==========
+
+function handleKeyboardShortcut(event: KeyboardEvent): boolean {
+  const key = event.key.toLowerCase();
+
+  // 检查是否有待转换的文件
+  const hasPendingFiles = state.files.some((f) => f.status === 'pending' || f.status === 'failed');
+  const completedFiles = state.files.filter((f) => f.status === 'completed');
+
+  // Ctrl/Cmd + Enter: 开始转换
+  if ((event.ctrlKey || event.metaKey) && key === 'enter' && hasPendingFiles && !state.isConverting) {
+    convertAll();
+    return true;
+  }
+
+  // Escape: 取消/关闭
+  if (key === 'escape') {
+    clearFiles();
+    return true;
+  }
+
+  // Ctrl/Cmd + S: 下载所有
+  if ((event.ctrlKey || event.metaKey) && key === 's') {
+    if (completedFiles.length > 0) {
+      // 触发下载
+      return true;
+    }
+  }
+
+  return false;
+}
+
 // 导出 store 和方法
 export function useImageStore() {
   return {
@@ -314,10 +521,14 @@ export function useImageStore() {
     get targetFormat() { return state.targetFormat; },
     get settings() { return state.settings; },
     get isConverting() { return state.isConverting; },
+    get history() { return state.history; },
+    get theme() { return state.theme; },
+    get isDarkMode() { return state.isDarkMode; },
 
     // computed
     completedFiles: computed(() => state.files.filter((f) => f.status === 'completed')),
     hasFilesToConvert: computed(() => state.files.some((f) => f.status === 'pending' || f.status === 'failed')),
+    historyCount: computed(() => state.history.length),
 
     // actions
     addFiles,
@@ -328,5 +539,13 @@ export function useImageStore() {
     updateFileStatus,
     convertSingle,
     convertAll,
+    addToHistory,
+    clearHistory,
+    removeHistoryItem,
+    setTheme,
+    toggleDarkMode,
+    generateSequentialName,
+    generateTimestampName,
+    handleKeyboardShortcut,
   };
 }

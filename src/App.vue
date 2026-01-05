@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref, computed } from 'vue';
+import { ref, computed, onMounted, onUnmounted } from 'vue';
 import { useImageStore } from './stores/imageStore';
 import { downloadAsZip } from './utils/download';
 import FileUpload from './components/FileUpload.vue';
@@ -8,10 +8,13 @@ import FileList from './components/FileList.vue';
 import AdvancedSettings from './components/AdvancedSettings.vue';
 import ImagePreview from './components/ImagePreview.vue';
 import OfdProcessor from './components/OfdProcessor.vue';
+import { formatFileSize } from './types';
 
 type TabType = 'image' | 'ofd';
 
 const activeTab = ref<TabType>('image');
+const showHistory = ref(false);
+const showShortcuts = ref(false);
 
 // 使用 store
 const store = useImageStore();
@@ -19,7 +22,13 @@ const files = computed(() => store.files);
 const targetFormat = computed(() => store.targetFormat);
 const settings = computed(() => store.settings);
 const isConverting = computed(() => store.isConverting);
+const isDarkMode = computed(() => store.isDarkMode);
+const history = computed(() => store.history);
 const clearFiles = store.clearFiles.bind(store);
+const toggleDarkMode = store.toggleDarkMode.bind(store);
+const clearHistory = store.clearHistory.bind(store);
+const removeHistoryItem = store.removeHistoryItem.bind(store);
+const convertAll = store.convertAll.bind(store);
 
 const completedFiles = computed(() => files.value.filter((f) => f.status === 'completed'));
 const hasFilesToConvert = computed(() =>
@@ -27,7 +36,7 @@ const hasFilesToConvert = computed(() =>
 );
 
 const handleConvertAll = async () => {
-  await store.convertAll();
+  await convertAll();
 };
 
 const handleDownloadAll = async () => {
@@ -40,6 +49,93 @@ const handleDownloadAll = async () => {
     );
   }
 };
+
+// 键盘快捷键处理
+const handleKeydown = (e: KeyboardEvent) => {
+  // 如果正在输入，不触发快捷键
+  if (e.target instanceof HTMLInputElement || e.target instanceof HTMLTextAreaElement) {
+    return;
+  }
+
+  // Ctrl/Cmd + Enter: 开始转换
+  if ((e.ctrlKey || e.metaKey) && e.key === 'Enter') {
+    e.preventDefault();
+    if (hasFilesToConvert.value && !isConverting.value) {
+      handleConvertAll();
+    }
+    return;
+  }
+
+  // Escape: 关闭弹窗/清空文件
+  if (e.key === 'Escape') {
+    if (showHistory.value) {
+      showHistory.value = false;
+      return;
+    }
+    if (showShortcuts.value) {
+      showShortcuts.value = false;
+      return;
+    }
+    if (files.value.length > 0) {
+      clearFiles();
+    }
+    return;
+  }
+
+  // Ctrl/Cmd + H: 历史记录
+  if ((e.ctrlKey || e.metaKey) && e.key === 'h') {
+    e.preventDefault();
+    showHistory.value = !showHistory.value;
+    return;
+  }
+
+  // Ctrl/Cmd + /: 显示快捷键
+  if ((e.ctrlKey || e.metaKey) && e.key === '/') {
+    e.preventDefault();
+    showShortcuts.value = !showShortcuts.value;
+    return;
+  }
+
+  // D: 切换深色模式
+  if (e.key === 'd' && !e.ctrlKey && !e.metaKey && !e.altKey) {
+    toggleDarkMode();
+    return;
+  }
+};
+
+onMounted(() => {
+  document.addEventListener('keydown', handleKeydown);
+});
+
+onUnmounted(() => {
+  document.removeEventListener('keydown', handleKeydown);
+});
+
+// 格式化时间
+const formatTime = (timestamp: number) => {
+  const date = new Date(timestamp);
+  const now = new Date();
+  const diff = now.getTime() - date.getTime();
+
+  if (diff < 60000) {
+    return '刚刚';
+  } else if (diff < 3600000) {
+    return `${Math.floor(diff / 60000)} 分钟前`;
+  } else if (diff < 86400000) {
+    return `${Math.floor(diff / 3600000)} 小时前`;
+  } else {
+    return date.toLocaleDateString('zh-CN');
+  }
+};
+
+// 快捷键列表
+const shortcuts = [
+  { key: 'Ctrl + Enter', action: '开始转换', description: '转换所有待处理的文件' },
+  { key: 'Escape', action: '取消/关闭', description: '清空文件列表或关闭弹窗' },
+  { key: 'Ctrl + H', action: '历史记录', description: '打开/关闭转换历史' },
+  { key: 'Ctrl + /', action: '快捷键帮助', description: '显示快捷键列表' },
+  { key: 'D', action: '切换主题', description: '切换深色/浅色模式' },
+];
 </script>
 
 <template>
@@ -105,14 +201,56 @@ const handleDownloadAll = async () => {
 
           <!-- 功能特性标签 -->
           <div class="hidden md:flex items-center gap-2">
-            <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-medium bg-green-100 text-green-700">
+            <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-medium bg-green-100 text-green-700 dark:bg-green-900/30 dark:text-green-400">
               <span class="w-1.5 h-1.5 bg-green-500 rounded-full"></span>
               免费使用
             </span>
-            <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-medium bg-blue-100 text-blue-700">
+            <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-medium bg-blue-100 text-blue-700 dark:bg-blue-900/30 dark:text-blue-400">
               <span class="w-1.5 h-1.5 bg-blue-500 rounded-full"></span>
               无需上传
             </span>
+          </div>
+
+          <!-- 工具按钮 -->
+          <div class="flex items-center gap-2">
+            <!-- 快捷键按钮 -->
+            <button
+              @click="showShortcuts = true"
+              class="p-2 text-gray-500 hover:text-gray-700 hover:bg-gray-100 rounded-lg transition-colors"
+              title="快捷键 (Ctrl + /)"
+            >
+              <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8.228 9c.549-1.165 2.03-2 3.772-2 2.21 0 4 1.343 4 3 0 1.4-1.278 2.575-3.006 2.907-.542.104-.994.54-.994 1.093m0 3h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+              </svg>
+            </button>
+
+            <!-- 历史记录按钮 -->
+            <button
+              @click="showHistory = true"
+              class="p-2 text-gray-500 hover:text-gray-700 hover:bg-gray-100 rounded-lg transition-colors relative"
+              title="历史记录 (Ctrl + H)"
+            >
+              <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+              </svg>
+              <span v-if="history.length > 0" class="absolute -top-1 -right-1 w-4 h-4 bg-primary-500 text-white text-xs rounded-full flex items-center justify-center">
+                {{ history.length > 9 ? '9+' : history.length }}
+              </span>
+            </button>
+
+            <!-- 深色模式切换 -->
+            <button
+              @click="toggleDarkMode"
+              class="p-2 text-gray-500 hover:text-gray-700 hover:bg-gray-100 rounded-lg transition-colors"
+              title="切换深色模式 (D)"
+            >
+              <svg v-if="isDarkMode" class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z" />
+              </svg>
+              <svg v-else class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z" />
+              </svg>
+            </button>
           </div>
         </div>
       </div>
@@ -286,21 +424,145 @@ const handleDownloadAll = async () => {
     </main>
 
     <!-- Footer -->
-    <footer class="border-t border-gray-200/50 bg-white/50 backdrop-blur-sm mt-12">
+    <footer class="border-t border-gray-200/50 bg-white/50 backdrop-blur-sm mt-12 dark:border-gray-700/50 dark:bg-gray-800/50">
       <div class="max-w-7xl mx-auto px-4 py-6 sm:px-6 lg:px-8">
-        <div class="flex flex-wrap items-center justify-center gap-4 text-sm text-gray-500">
+        <div class="flex flex-wrap items-center justify-center gap-4 text-sm text-gray-500 dark:text-gray-400">
           <span class="flex items-center gap-1">
             <svg class="w-4 h-4 text-green-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
             </svg>
             隐私保护
           </span>
-          <span class="text-gray-300">|</span>
+          <span class="text-gray-300 dark:text-gray-600">|</span>
           <span>所有图片处理均在浏览器本地完成</span>
-          <span class="text-gray-300">|</span>
+          <span class="text-gray-300 dark:text-gray-600">|</span>
           <span>免费开源</span>
         </div>
       </div>
     </footer>
+
+    <!-- 历史记录弹窗 -->
+    <Teleport to="body">
+      <div v-if="showHistory" class="fixed inset-0 z-50 flex items-center justify-center p-4">
+        <!-- 遮罩层 -->
+        <div class="absolute inset-0 bg-black/50" @click="showHistory = false"></div>
+
+        <!-- 弹窗内容 -->
+        <div class="relative bg-white rounded-2xl shadow-2xl max-w-2xl w-full max-h-[80vh] overflow-hidden dark:bg-gray-800">
+          <!-- 头部 -->
+          <div class="flex items-center justify-between px-6 py-4 border-b border-gray-200 dark:border-gray-700">
+            <h3 class="text-lg font-semibold text-gray-800 dark:text-white">转换历史</h3>
+            <div class="flex items-center gap-2">
+              <button
+                v-if="history.length > 0"
+                @click="clearHistory"
+                class="px-3 py-1 text-sm text-red-500 hover:bg-red-50 rounded-lg transition-colors"
+              >
+                清空
+              </button>
+              <button
+                @click="showHistory = false"
+                class="p-2 text-gray-400 hover:text-gray-600 hover:bg-gray-100 rounded-lg transition-colors"
+              >
+                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+                </svg>
+              </button>
+            </div>
+          </div>
+
+          <!-- 历史列表 -->
+          <div class="overflow-y-auto max-h-[60vh]">
+            <div v-if="history.length === 0" class="py-12 text-center text-gray-500">
+              <svg class="w-12 h-12 mx-auto mb-4 text-gray-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+              </svg>
+              <p>暂无转换记录</p>
+              <p class="text-sm mt-2">转换完成后会在这里显示记录</p>
+            </div>
+
+            <ul v-else class="divide-y divide-gray-100 dark:divide-gray-700">
+              <li
+                v-for="item in history"
+                :key="item.id"
+                class="px-6 py-4 hover:bg-gray-50 dark:hover:bg-gray-700/50 transition-colors"
+              >
+                <div class="flex items-center justify-between">
+                  <div class="flex-1 min-w-0">
+                    <p class="font-medium text-gray-800 dark:text-white truncate">{{ item.originalName }}</p>
+                    <div class="flex items-center gap-3 mt-1 text-sm text-gray-500">
+                      <span>{{ item.targetFormat.toUpperCase() }}</span>
+                      <span>{{ formatTime(item.timestamp) }}</span>
+                    </div>
+                  </div>
+                  <div class="flex items-center gap-4 text-sm">
+                    <span class="text-gray-500">
+                      {{ formatFileSize(item.originalSize) }} → {{ formatFileSize(item.convertedSize) }}
+                    </span>
+                    <button
+                      @click="removeHistoryItem(item.id)"
+                      class="p-1 text-gray-400 hover:text-red-500 transition-colors"
+                      title="删除"
+                    >
+                      <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+                      </svg>
+                    </button>
+                  </div>
+                </div>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </Teleport>
+
+    <!-- 快捷键弹窗 -->
+    <Teleport to="body">
+      <div v-if="showShortcuts" class="fixed inset-0 z-50 flex items-center justify-center p-4">
+        <!-- 遮罩层 -->
+        <div class="absolute inset-0 bg-black/50" @click="showShortcuts = false"></div>
+
+        <!-- 弹窗内容 -->
+        <div class="relative bg-white rounded-2xl shadow-2xl max-w-md w-full overflow-hidden dark:bg-gray-800">
+          <!-- 头部 -->
+          <div class="flex items-center justify-between px-6 py-4 border-b border-gray-200 dark:border-gray-700">
+            <h3 class="text-lg font-semibold text-gray-800 dark:text-white">键盘快捷键</h3>
+            <button
+              @click="showShortcuts = false"
+              class="p-2 text-gray-400 hover:text-gray-600 hover:bg-gray-100 rounded-lg transition-colors"
+            >
+              <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+              </svg>
+            </button>
+          </div>
+
+          <!-- 快捷键列表 -->
+          <div class="p-6 space-y-4">
+            <div
+              v-for="shortcut in shortcuts"
+              :key="shortcut.key"
+              class="flex items-center justify-between"
+            >
+              <div>
+                <p class="font-medium text-gray-800 dark:text-white">{{ shortcut.action }}</p>
+                <p class="text-sm text-gray-500">{{ shortcut.description }}</p>
+              </div>
+              <kbd class="px-3 py-1 text-sm font-mono bg-gray-100 rounded-lg text-gray-700 dark:bg-gray-700 dark:text-gray-300">
+                {{ shortcut.key }}
+              </kbd>
+            </div>
+          </div>
+
+          <!-- 底部提示 -->
+          <div class="px-6 py-4 bg-gray-50 dark:bg-gray-700/50 border-t border-gray-100 dark:border-gray-700">
+            <p class="text-sm text-gray-500 text-center">
+              按 <kbd class="px-2 py-0.5 text-xs font-mono bg-gray-200 rounded dark:bg-gray-600">Esc</kbd> 关闭此弹窗
+            </p>
+          </div>
+        </div>
+      </div>
+    </Teleport>
   </div>
 </template>

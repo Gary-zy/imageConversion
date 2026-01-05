@@ -7,9 +7,6 @@ import autoprefixer from 'autoprefixer';
 export default defineConfig({
   plugins: [
     vue(),
-    tailwindcss({
-      config: './tailwind.config.js',
-    }),
   ],
 
   resolve: {

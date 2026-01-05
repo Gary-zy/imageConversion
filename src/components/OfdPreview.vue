@@ -153,7 +153,7 @@ watch(converterRef, () => {
 // 当 converter 或页面变化时重新渲染
 watch(
   [converterRef, () => props.currentPage, () => props.scale],
-  async ([newConverter, newPage, newScale]) => {
+  async ([newConverter, _newPage, _newScale]) => {
     if (newConverter && containerRef.value) {
       renderDocument();
     } else if (newConverter && !containerRef.value) {

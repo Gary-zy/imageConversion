@@ -127,6 +127,69 @@
                   {{ size.label }}
                 </button>
               </div>
+
+              <!-- 社交媒体尺寸预设 -->
+              <div class="mt-4">
+                <label class="block text-xs text-gray-500 mb-2">社交媒体尺寸</label>
+                <div class="space-y-2">
+                  <!-- Instagram -->
+                  <div>
+                    <span class="text-xs font-medium text-gray-600">Instagram</span>
+                    <div class="flex flex-wrap gap-2 mt-1">
+                      <button
+                        v-for="size in SOCIAL_MEDIA_SIZES.instagram"
+                        :key="size.name"
+                        @click="updateSettings({ resizeWidth: size.width, resizeHeight: size.height })"
+                        class="px-2 py-1 text-xs text-gray-600 bg-purple-50 hover:bg-purple-100 rounded transition-colors"
+                      >
+                        {{ size.name }} ({{ size.width }}x{{ size.height }})
+                      </button>
+                    </div>
+                  </div>
+                  <!-- Facebook -->
+                  <div>
+                    <span class="text-xs font-medium text-gray-600">Facebook</span>
+                    <div class="flex flex-wrap gap-2 mt-1">
+                      <button
+                        v-for="size in SOCIAL_MEDIA_SIZES.facebook"
+                        :key="size.name"
+                        @click="updateSettings({ resizeWidth: size.width, resizeHeight: size.height })"
+                        class="px-2 py-1 text-xs text-gray-600 bg-blue-50 hover:bg-blue-100 rounded transition-colors"
+                      >
+                        {{ size.name }} ({{ size.width }}x{{ size.height }})
+                      </button>
+                    </div>
+                  </div>
+                  <!-- Twitter -->
+                  <div>
+                    <span class="text-xs font-medium text-gray-600">Twitter/X</span>
+                    <div class="flex flex-wrap gap-2 mt-1">
+                      <button
+                        v-for="size in SOCIAL_MEDIA_SIZES.twitter"
+                        :key="size.name"
+                        @click="updateSettings({ resizeWidth: size.width, resizeHeight: size.height })"
+                        class="px-2 py-1 text-xs text-gray-600 bg-gray-100 hover:bg-gray-200 rounded transition-colors"
+                      >
+                        {{ size.name }} ({{ size.width }}x{{ size.height }})
+                      </button>
+                    </div>
+                  </div>
+                  <!-- YouTube -->
+                  <div>
+                    <span class="text-xs font-medium text-gray-600">YouTube</span>
+                    <div class="flex flex-wrap gap-2 mt-1">
+                      <button
+                        v-for="size in SOCIAL_MEDIA_SIZES.youtube"
+                        :key="size.name"
+                        @click="updateSettings({ resizeWidth: size.width, resizeHeight: size.height })"
+                        class="px-2 py-1 text-xs text-gray-600 bg-red-50 hover:bg-red-100 rounded transition-colors"
+                      >
+                        {{ size.name }} ({{ size.width }}x{{ size.height }})
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              </div>
             </div>
           </div>
 
@@ -870,6 +933,70 @@
         <div v-if="activeTab === 'icon' && !isIconFormat" class="text-center text-gray-500 py-8">
           <p>图标设置仅在选择 ICO 或 ICNS 格式时可用</p>
         </div>
+
+        <!-- EXIF 设置 -->
+        <div v-if="activeTab === 'exif'" class="space-y-4">
+          <div class="flex items-center gap-2 mb-4">
+            <input
+              type="checkbox"
+              id="editExif"
+              v-model="settings.editExif"
+              class="w-4 h-4 text-primary-500 border-gray-300 rounded focus:ring-primary-500"
+            />
+            <label
+              for="editExif"
+              class="text-sm font-medium text-gray-700"
+            >
+              编辑 EXIF 信息
+            </label>
+          </div>
+
+          <template v-if="settings.editExif">
+            <div>
+              <label class="block text-xs text-gray-500 mb-1">作者 (Artist)</label>
+              <input
+                type="text"
+                v-model="settings.exifArtist"
+                placeholder="输入作者名称"
+                class="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-primary-500 focus:border-primary-500"
+              />
+            </div>
+
+            <div>
+              <label class="block text-xs text-gray-500 mb-1">版权 (Copyright)</label>
+              <input
+                type="text"
+                v-model="settings.exifCopyright"
+                placeholder="输入版权信息，如: © 2025 Your Name"
+                class="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-primary-500 focus:border-primary-500"
+              />
+            </div>
+
+            <div>
+              <label class="block text-xs text-gray-500 mb-1">软件 (Software)</label>
+              <input
+                type="text"
+                v-model="settings.exifSoftware"
+                placeholder="生成软件的名称"
+                class="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-primary-500 focus:border-primary-500"
+              />
+            </div>
+
+            <div class="p-4 bg-blue-50 rounded-lg dark:bg-blue-900/20">
+              <p class="text-sm text-blue-700 dark:text-blue-400">
+                <strong>提示：</strong>EXIF 信息编辑功能会在转换后的图片中嵌入您设置的信息。目前支持 JPEG、PNG 和 WebP 格式。
+              </p>
+            </div>
+          </template>
+
+          <div v-else class="text-center text-gray-500 py-8">
+            <svg class="w-12 h-12 mx-auto mb-4 text-gray-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+            </svg>
+            <p>启用 EXIF 编辑后可修改图片元数据</p>
+            <p class="text-sm mt-2">包括作者、版权、软件等信息</p>
+          </div>
+        </div>
       </div>
     </div>
   </div>
@@ -878,7 +1005,7 @@
 <script setup lang="ts">
 import { ref, computed } from 'vue';
 import { useImageStore } from '../stores/imageStore';
-import { FORMAT_OPTIONS } from '../types';
+import { FORMAT_OPTIONS, SOCIAL_MEDIA_SIZES } from '../types';
 
 const isExpanded = ref(false);
 const activeTab = ref('basic');
@@ -909,6 +1036,7 @@ const tabs = [
   { id: 'filter', label: '滤镜' },
   { id: 'watermark', label: '水印' },
   { id: 'icon', label: '图标' },
+  { id: 'exif', label: 'EXIF' },
 ];
 
 const handleImageUpload = (e: Event) => {

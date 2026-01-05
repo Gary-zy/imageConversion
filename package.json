@@ -22,6 +22,7 @@
     "jszip-utils": "^0.1.0",
     "ofd-xml-parser": "^0.0.6",
     "pica": "^9.0.1",
+    "piexifjs": "^1.0.6",
     "sm-crypto": "^0.3.13",
     "vue": "^3.5.13",
     "web-streams-polyfill": "^4.2.0"

@@ -15,4 +15,136 @@ html, body, #root {
 body {
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
   background-color: #f5f5f5;
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+/* Dark mode styles */
+html.dark {
+  background-color: #111827;
+  color: #f9fafb;
+}
+
+html.dark body {
+  background-color: #111827;
+  color: #f9fafb;
+}
+
+html.dark .bg-gradient-to-br {
+  background-image: linear-gradient(to bottom right, #1f2937, #111827, #1f2937) !important;
+}
+
+html.dark .bg-white {
+  background-color: #1f2937 !important;
+  border-color: #374151 !important;
+}
+
+html.dark .bg-gray-50 {
+  background-color: #1f2937 !important;
+}
+
+html.dark .bg-gray-100 {
+  background-color: #374151 !important;
+}
+
+html.dark .text-gray-800 {
+  color: #f9fafb !important;
+}
+
+html.dark .text-gray-700 {
+  color: #d1d5db !important;
+}
+
+html.dark .text-gray-600 {
+  color: #9ca3af !important;
+}
+
+html.dark .text-gray-500 {
+  color: #6b7280 !important;
+}
+
+html.dark .text-gray-400 {
+  color: #9ca3af !important;
+}
+
+html.dark .border-gray-200 {
+  border-color: #374151 !important;
+}
+
+html.dark .border-gray-300 {
+  border-color: #4b5563 !important;
+}
+
+/* Scrollbar styling for dark mode */
+html.dark ::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+html.dark ::-webkit-scrollbar-track {
+  background: #1f2937;
+}
+
+html.dark ::-webkit-scrollbar-thumb {
+  background: #4b5563;
+  border-radius: 4px;
+}
+
+html.dark ::-webkit-scrollbar-thumb:hover {
+  background: #6b7280;
+}
+
+/* Input styling for dark mode */
+html.dark input[type="text"],
+html.dark input[type="number"],
+html.dark select {
+  background-color: #374151;
+  border-color: #4b5563;
+  color: #f9fafb;
+}
+
+html.dark input[type="text"]:focus,
+html.dark input[type="number"]:focus,
+html.dark select:focus {
+  border-color: #6366f1;
+  outline: none;
+  box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.2);
+}
+
+/* Button styling for dark mode */
+html.dark button.bg-gray-100 {
+  background-color: #374151 !important;
+  color: #f9fafb !important;
+}
+
+html.dark button.bg-gray-100:hover {
+  background-color: #4b5563 !important;
+}
+
+html.dark button.bg-gray-200 {
+  background-color: #374151 !important;
+  color: #f9fafb !important;
+}
+
+html.dark button.bg-gray-200:hover {
+  background-color: #4b5563 !important;
+}
+
+/* Card styling for dark mode */
+html.dark .rounded-2xl {
+  border-color: #374151 !important;
+}
+
+html.dark .shadow-sm {
+  box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.3) !important;
+}
+
+html.dark .shadow-lg {
+  box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.4) !important;
+}
+
+/* Transition for theme change */
+* {
+  transition-property: background-color, border-color, color, fill, stroke;
+  transition-duration: 150ms;
+  transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
 }

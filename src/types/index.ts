@@ -116,6 +116,11 @@ export interface ConvertOptions {
   };
   backgroundColor?: string;
   iconSizes?: number[];
+  exif?: {
+    artist?: string;
+    copyright?: string;
+    software?: string;
+  };
 }
 
 // 高级设置
@@ -189,6 +194,12 @@ export interface AdvancedSettings {
   // 新增：去噪
   enableDenoise: boolean;
   denoiseLevel: number;
+
+  // EXIF 信息编辑
+  editExif: boolean;
+  exifArtist: string;
+  exifCopyright: string;
+  exifSoftware: string;
 }
 
 // ========== 格式配置 ==========
@@ -440,4 +451,52 @@ export interface ConversionHistory {
   settings: Partial<AdvancedSettings>;
 }
 
-export const MAX_HISTORY_ITEMS = 20;
+export const MAX_HISTORY_ITEMS = 50;
+
+// 文件名模板类型
+export interface FileNameTemplate {
+  prefix: string;
+  suffix: string;
+  pattern: 'original' | 'sequential' | 'timestamp';
+  startNumber: number;
+}
+
+// 深色模式类型
+export type ThemeMode = 'light' | 'dark' | 'auto';
+
+// 键盘快捷键配置
+export interface KeyboardShortcut {
+  key: string;
+  ctrl?: boolean;
+  shift?: boolean;
+  alt?: boolean;
+  action: string;
+  description: string;
+}
+
+// 社交媒体预设
+export interface SocialMediaPreset {
+  name: string;
+  platform: string;
+  width: number;
+  height: number;
+  description: string;
+}
+
+// EXIF信息类型
+export interface ExifInfo {
+  make?: string;
+  model?: string;
+  datetime?: string;
+  software?: string;
+  artist?: string;
+  copyright?: string;
+  lensModel?: string;
+  focalLength?: string;
+  fNumber?: string;
+  exposureTime?: string;
+  iso?: number;
+  flash?: string;
+  gpsLatitude?: number;
+  gpsLongitude?: number;
+}
