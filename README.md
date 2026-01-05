@@ -2,12 +2,15 @@
 
 [English](./README_EN.md) | 简体中文
 
+🔗 **在线预览**: [https://gary-zy.github.io/imageConversion/](https://gary-zy.github.io/imageConversion/)
+
 免费在线图片格式转换工具，支持多种图片格式互转、OFD文档处理。所有转换在浏览器本地完成，保护隐私，无需上传服务器。
 
-![License](https://img.shields.io/badge/license-MIT-blue.svg)
-![Vue](https://img.shields.io/badge/Vue-3.4-42b883.svg)
-![TypeScript](https://img.shields.io/badge/TypeScript-5.6-3178c6.svg)
-![Vite](https://img.shields.io/badge/Vite-6-646cff.svg)
+[![License](https://img.shields.io/badge/license-MIT-blue.svg)](./LICENSE)
+[![Vue](https://img.shields.io/badge/Vue-3.4-42b883.svg)](https://vuejs.org/)
+[![TypeScript](https://img.shields.io/badge/TypeScript-5.6-3178c6.svg)](https://www.typescriptlang.org/)
+[![Vite](https://img.shields.io/badge/Vite-6-646cff.svg)](https://vitejs.dev/)
+[![GitHub Pages](https://img.shields.io/badge/Demo-GitHub%20Pages-brightgreen)](https://gary-zy.github.io/imageConversion/)
 
 ## 目录
 
