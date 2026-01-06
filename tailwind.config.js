@@ -6,12 +6,12 @@ export default {
   ],
   darkMode: 'class',
   safelist: [
-    // Ring utilities for ink wash style
-    'ring-2', 'ring-ink-700', 'ring-ink-300',
+    // Ring utilities for Soft UI
+    'ring-2', 'ring-primary-500', 'ring-slate-300',
     // Shadow utilities
-    'shadow-ink', 'shadow-ink-md', 'shadow-ink-lg', 'shadow-ink-dark',
+    'shadow-soft', 'shadow-soft-md', 'shadow-soft-lg', 'shadow-soft-inner',
     // Accent colors
-    'accent-ink-700', 'accent-ink-300',
+    'accent-primary-500', 'accent-slate-300',
     // Transition classes for modals
     'scale-95', 'scale-100', 'translate-y-0', 'translate-y-4',
     'ease-in', 'ease-out',
@@ -19,6 +19,13 @@ export default {
   theme: {
     extend: {
       colors: {
+        // Soft UI Evolution 柔和色
+        soft: {
+          blue: '#87CEEB',
+          pink: '#FFB6C1',
+          green: '#90EE90',
+        },
+        // 主色调 - 功能蓝
         primary: {
           50: '#eff6ff',
           100: '#dbeafe',
@@ -32,47 +39,25 @@ export default {
           900: '#1e3a8a',
           950: '#172554',
         },
-        // 水墨画风格颜色系统
-        ink: {
-          50: '#FDFBF7',   // 宣纸白
-          100: '#F5F0E8',  // 淡墨
-          200: '#E8E0D4',  // 浅墨
-          300: '#D4C9B8',  // 轻墨
-          400: '#A69B8A',  // 中墨
-          500: '#7A7062',  // 深墨
-          600: '#5C544A',  // 浓墨
-          700: '#3D3832',  // 重墨
-          800: '#2A2622',  // 焦墨
-          900: '#1A1A1A',  // 墨黑
-          950: '#0D0D0D',  // 极墨
-        },
-        vermillion: {
-          50: '#FEF2F2',
-          100: '#FEE2E2',
-          200: '#FECACA',
-          300: '#FCA5A5',
-          400: '#F87171',
-          500: '#C53030',  // 朱砂红
-          600: '#B91C1C',
-          700: '#991B1B',
-          800: '#7F1D1D',
-          900: '#450A0A',
-        },
-        bamboo: {
-          50: '#F0FDF4',
-          100: '#DCFCE7',
-          200: '#BBF7D0',
-          300: '#86EFAC',
-          400: '#4ADE80',
-          500: '#2F855A',  // 竹青
-          600: '#16A34A',
-          700: '#15803D',
-          800: '#166534',
-          900: '#14532D',
+        // CTA 橙色
+        cta: {
+          50: '#fff7ed',
+          100: '#ffedd5',
+          200: '#fed7aa',
+          300: '#fdba74',
+          400: '#fb923c',
+          500: '#f97316',
+          600: '#ea580c',
+          700: '#c2410c',
+          800: '#9a3412',
+          900: '#7c2d12',
         },
       },
       fontFamily: {
+        heading: ['Varela Round', 'system-ui', '-apple-system', 'sans-serif'],
+        body: ['Nunito Sans', 'system-ui', '-apple-system', 'sans-serif'],
         sans: [
+          'Nunito Sans',
           '-apple-system',
           'BlinkMacSystemFont',
           '"Segoe UI"',
@@ -81,29 +66,20 @@ export default {
           'Arial',
           'sans-serif',
         ],
-        serif: [
-          '"Noto Serif SC"',
-          '"Source Han Serif SC"',
-          '"Songti SC"',
-          'Georgia',
-          'serif',
-        ],
       },
       boxShadow: {
+        // Soft UI Evolution 阴影系统
+        'soft': '0 2px 15px -3px rgba(0, 0, 0, 0.07), 0 10px 20px -2px rgba(0, 0, 0, 0.04)',
+        'soft-md': '0 4px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 30px -5px rgba(0, 0, 0, 0.06)',
+        'soft-lg': '0 10px 40px -10px rgba(0, 0, 0, 0.15), 0 20px 50px -15px rgba(0, 0, 0, 0.1)',
+        'soft-inner': 'inset 0 2px 4px 0 rgba(0, 0, 0, 0.05)',
+        // Primary 色阴影
         'primary': '0 4px 14px 0 rgba(59, 130, 246, 0.39)',
         'primary-lg': '0 10px 25px -5px rgba(59, 130, 246, 0.4), 0 8px 10px -6px rgba(59, 130, 246, 0.2)',
-        'soft': '0 2px 15px -3px rgba(0, 0, 0, 0.07), 0 10px 20px -2px rgba(0, 0, 0, 0.04)',
-        // 水墨风格阴影
-        'ink': '0 2px 8px -2px rgba(26, 26, 26, 0.1), 0 4px 12px -4px rgba(26, 26, 26, 0.08)',
-        'ink-md': '0 4px 16px -4px rgba(26, 26, 26, 0.15), 0 8px 24px -8px rgba(26, 26, 26, 0.1)',
-        'ink-lg': '0 8px 32px -8px rgba(26, 26, 26, 0.2), 0 16px 48px -16px rgba(26, 26, 26, 0.15)',
-        'ink-dark': '0 2px 8px -2px rgba(0, 0, 0, 0.3), 0 4px 12px -4px rgba(0, 0, 0, 0.2)',
       },
-      ringColor: {
-        ink: {
-          300: '#D4C9B8',
-          700: '#3D3832',
-        },
+      borderRadius: {
+        'soft': '1rem',
+        'soft-lg': '1.5rem',
       },
       animation: {
         'fade-in': 'fadeIn 0.5s ease-out',

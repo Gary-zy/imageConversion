@@ -1,10 +1,10 @@
 <template>
   <div
     :class="[
-      'relative overflow-hidden rounded-lg border-2 border-dashed transition-all duration-300 ease-out cursor-pointer',
+      'relative overflow-hidden rounded-2xl border-2 border-dashed transition-all duration-200 ease-out cursor-pointer',
       isDragOver
-        ? 'border-ink-600 bg-ink-100 dark:bg-ink-700 scale-[1.01] shadow-ink-md'
-        : 'border-ink-300 dark:border-ink-600 hover:border-ink-500 dark:hover:border-ink-400 hover:bg-ink-50/50 dark:hover:bg-ink-800/50 bg-ink-50 dark:bg-ink-800'
+        ? 'border-primary-500 bg-primary-50 dark:bg-primary-900/20 scale-[1.01] shadow-soft-md'
+        : 'border-slate-300 dark:border-slate-600 hover:border-primary-400 dark:hover:border-primary-500 hover:bg-slate-50 dark:hover:bg-slate-800/50 bg-white dark:bg-slate-800'
     ]"
     @dragover="handleDragOver"
     @dragleave="handleDragLeave"
@@ -21,22 +21,22 @@
     />
 
     <div class="flex flex-col items-center gap-6 py-12 px-6">
-      <!-- 图标区域 - 水墨风格 -->
+      <!-- 图标区域 - Soft UI -->
       <div
         :class="[
-          'w-20 h-20 rounded-lg flex items-center justify-center transition-all duration-300',
-          isDragOver ? 'bg-ink-200 dark:bg-ink-600 scale-105' : 'bg-ink-100 dark:bg-ink-700'
+          'w-20 h-20 rounded-2xl flex items-center justify-center transition-all duration-200',
+          isDragOver ? 'bg-primary-100 dark:bg-primary-900/30 scale-105' : 'bg-slate-100 dark:bg-slate-700'
         ]"
       >
         <div class="relative">
           <div
             :class="[
-              'absolute inset-0 rounded-full transition-all duration-300',
-              isDragOver ? 'bg-ink-500 animate-ping opacity-20' : ''
+              'absolute inset-0 rounded-full transition-all duration-200',
+              isDragOver ? 'bg-primary-500 animate-ping opacity-20' : ''
             ]"
           />
           <svg
-            :class="['w-10 h-10 relative z-10 transition-colors duration-300', isDragOver ? 'text-ink-700 dark:text-ink-200' : 'text-ink-500 dark:text-ink-400']"
+            :class="['w-10 h-10 relative z-10 transition-colors duration-200', isDragOver ? 'text-primary-600 dark:text-primary-400' : 'text-primary-500 dark:text-primary-400']"
             fill="none"
             stroke="currentColor"
             viewBox="0 0 24 24"
@@ -52,37 +52,37 @@
       </div>
 
       <div class="text-center space-y-2">
-        <p class="text-lg font-serif font-semibold text-ink-800 dark:text-ink-100">
+        <p class="text-lg font-heading font-semibold text-slate-800 dark:text-slate-100">
           {{ isDragOver ? '释放以上传图片' : '拖拽图片到这里，或点击选择文件' }}
         </p>
-        <div class="flex flex-wrap items-center justify-center gap-2 text-sm text-ink-500 dark:text-ink-400">
-          <span class="px-2 py-1 bg-ink-100 dark:bg-ink-700 rounded-md text-xs">JPEG</span>
-          <span class="px-2 py-1 bg-ink-100 dark:bg-ink-700 rounded-md text-xs">PNG</span>
-          <span class="px-2 py-1 bg-ink-100 dark:bg-ink-700 rounded-md text-xs">WebP</span>
-          <span class="px-2 py-1 bg-ink-100 dark:bg-ink-700 rounded-md text-xs">GIF</span>
-          <span class="px-2 py-1 bg-ink-100 dark:bg-ink-700 rounded-md text-xs">BMP</span>
-          <span class="px-2 py-1 bg-ink-100 dark:bg-ink-700 rounded-md text-xs">SVG</span>
-          <span class="px-2 py-1 bg-ink-100 dark:bg-ink-700 rounded-md text-xs">ICO</span>
-          <span class="px-2 py-1 bg-ink-100 dark:bg-ink-700 rounded-md text-xs">AVIF</span>
-          <span class="px-2 py-1 bg-ink-100 dark:bg-ink-700 rounded-md text-xs">HEIC</span>
+        <div class="flex flex-wrap items-center justify-center gap-2 text-sm text-slate-500 dark:text-slate-400">
+          <span class="px-2 py-1 bg-slate-100 dark:bg-slate-700 rounded-lg text-xs">JPEG</span>
+          <span class="px-2 py-1 bg-slate-100 dark:bg-slate-700 rounded-lg text-xs">PNG</span>
+          <span class="px-2 py-1 bg-slate-100 dark:bg-slate-700 rounded-lg text-xs">WebP</span>
+          <span class="px-2 py-1 bg-slate-100 dark:bg-slate-700 rounded-lg text-xs">GIF</span>
+          <span class="px-2 py-1 bg-slate-100 dark:bg-slate-700 rounded-lg text-xs">BMP</span>
+          <span class="px-2 py-1 bg-slate-100 dark:bg-slate-700 rounded-lg text-xs">SVG</span>
+          <span class="px-2 py-1 bg-slate-100 dark:bg-slate-700 rounded-lg text-xs">ICO</span>
+          <span class="px-2 py-1 bg-slate-100 dark:bg-slate-700 rounded-lg text-xs">AVIF</span>
+          <span class="px-2 py-1 bg-slate-100 dark:bg-slate-700 rounded-lg text-xs">HEIC</span>
         </div>
       </div>
 
-      <!-- 快捷键提示 - 水墨风格 -->
-      <div class="flex items-center gap-4 text-xs text-ink-400 dark:text-ink-500">
-        <span class="flex items-center gap-1.5 px-2 py-1 bg-ink-100 dark:bg-ink-700 rounded-md">
+      <!-- 快捷键提示 - Soft UI -->
+      <div class="flex items-center gap-4 text-xs text-slate-400 dark:text-slate-500">
+        <span class="flex items-center gap-1.5 px-2 py-1 bg-slate-100 dark:bg-slate-700 rounded-lg">
           <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2" />
           </svg>
           点击上传
         </span>
-        <span class="flex items-center gap-1.5 px-2 py-1 bg-ink-100 dark:bg-ink-700 rounded-md">
+        <span class="flex items-center gap-1.5 px-2 py-1 bg-slate-100 dark:bg-slate-700 rounded-lg">
           <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5v14H5a2 2 0 01-2-2V7a2 2 0 012-2h14a2 2 0 012 2v14a2 2 0 01-2 2h-4m0 0l-4-4m4 4l-4-4" />
           </svg>
           拖拽上传
         </span>
-        <span class="flex items-center gap-1.5 px-2 py-1 bg-ink-100 dark:bg-ink-700 rounded-md">
+        <span class="flex items-center gap-1.5 px-2 py-1 bg-slate-100 dark:bg-slate-700 rounded-lg">
           <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5v14H5a2 2 0 01-2-2V7a2 2 0 012-2h14a2 2 0 012 2v14a2 2 0 01-2 2h-4m0 0l-4-4m4 4l-4-4" />
           </svg>
@@ -91,9 +91,9 @@
       </div>
     </div>
 
-    <!-- 拖拽时的覆盖层 - 水墨风格 -->
-    <div v-if="isDragOver" class="absolute inset-0 bg-ink-500/10 dark:bg-ink-400/10 border-2 border-ink-600 dark:border-ink-400 rounded-lg flex items-center justify-center">
-      <div class="bg-ink-800 dark:bg-ink-100 text-ink-50 dark:text-ink-900 px-6 py-3 rounded-lg font-semibold shadow-ink-lg flex items-center gap-2">
+    <!-- 拖拽时的覆盖层 - Soft UI -->
+    <div v-if="isDragOver" class="absolute inset-0 bg-primary-500/10 dark:bg-primary-400/10 border-2 border-primary-500 dark:border-primary-400 rounded-2xl flex items-center justify-center">
+      <div class="bg-primary-500 text-white px-6 py-3 rounded-xl font-semibold shadow-soft-lg flex items-center gap-2">
         <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
           <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0L8 8m4-4v12" />
         </svg>
@@ -101,8 +101,8 @@
       </div>
     </div>
 
-    <!-- 上传成功动画 - 水墨风格 -->
-    <div v-if="uploadCount > 0" class="absolute top-4 right-4 bg-bamboo-500 text-white px-3 py-1.5 rounded-md text-sm font-medium animate-bounce shadow-ink">
+    <!-- 上传成功动画 - Soft UI -->
+    <div v-if="uploadCount > 0" class="absolute top-4 right-4 bg-emerald-500 text-white px-3 py-1.5 rounded-lg text-sm font-medium animate-bounce shadow-soft">
       +{{ uploadCount }} 文件已添加
     </div>
   </div>
