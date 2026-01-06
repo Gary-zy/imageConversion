@@ -1,66 +1,66 @@
 <template>
-  <div class="bg-white rounded-xl border border-gray-200 shadow-sm">
-    <!-- 标题栏 -->
-    <div class="px-5 py-4 border-b border-gray-100 flex items-center justify-between">
-      <h3 class="font-medium text-gray-800">输出格式</h3>
-      <div class="flex items-center gap-2 text-sm text-gray-500">
-        <span class="w-1.5 h-1.5 rounded-full bg-blue-500"></span>
+  <div class="bg-ink-50 dark:bg-ink-800 rounded-lg border border-ink-200 dark:border-ink-700 shadow-ink">
+    <!-- 标题栏 - 水墨风格 -->
+    <div class="px-5 py-4 border-b border-ink-100 dark:border-ink-700 flex items-center justify-between">
+      <h3 class="font-serif font-medium text-ink-800 dark:text-ink-100">输出格式</h3>
+      <div class="flex items-center gap-2 text-sm text-ink-500 dark:text-ink-400">
+        <span class="w-1.5 h-1.5 rounded-full bg-ink-600 dark:bg-ink-300"></span>
         {{ currentFormat?.label }}
       </div>
     </div>
 
     <div class="p-5">
-      <!-- 常用格式 -->
+      <!-- 常用格式 - 水墨风格 -->
       <div class="grid grid-cols-4 gap-3">
         <button
           v-for="format in commonFormats"
           :key="format.value"
           @click="setTargetFormat(format.value as ImageFormat)"
           :class="[
-            'group relative py-4 rounded-xl border transition-all',
+            'group relative py-4 rounded-lg border transition-all duration-300',
             targetFormat === format.value
-              ? 'border-blue-200 bg-gradient-to-b from-blue-50 to-white shadow-sm'
-              : 'border-gray-100 bg-gray-50/50 hover:bg-white hover:border-gray-200 hover:shadow-sm'
+              ? 'border-ink-400 dark:border-ink-500 bg-ink-100 dark:bg-ink-700 shadow-ink'
+              : 'border-ink-200 dark:border-ink-600 bg-ink-50/50 dark:bg-ink-800/50 hover:bg-ink-100 dark:hover:bg-ink-700 hover:border-ink-300 dark:hover:border-ink-500'
           ]"
         >
           <div class="text-center">
             <p :class="[
               'font-semibold',
-              targetFormat === format.value ? 'text-blue-600' : 'text-gray-700'
+              targetFormat === format.value ? 'text-ink-800 dark:text-ink-100' : 'text-ink-700 dark:text-ink-300'
             ]">
               {{ format.label }}
             </p>
             <p :class="[
               'text-xs mt-0.5',
-              targetFormat === format.value ? 'text-blue-400' : 'text-gray-400'
+              targetFormat === format.value ? 'text-ink-500 dark:text-ink-400' : 'text-ink-400 dark:text-ink-500'
             ]">
               .{{ format.extension }}
             </p>
           </div>
-          <!-- 选中指示 -->
+          <!-- 选中指示 - 水墨风格 -->
           <div
             v-if="targetFormat === format.value"
-            class="absolute -top-1 -right-1 w-5 h-5 bg-blue-500 rounded-full flex items-center justify-center shadow-sm"
+            class="absolute -top-1 -right-1 w-5 h-5 bg-ink-800 dark:bg-ink-100 rounded-full flex items-center justify-center shadow-ink"
           >
-            <svg class="w-3 h-3 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <svg class="w-3 h-3 text-ink-50 dark:text-ink-900" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M5 13l4 4L19 7" />
             </svg>
           </div>
         </button>
       </div>
 
-      <!-- 更多格式 -->
-      <div class="mt-4 pt-4 border-t border-gray-100">
+      <!-- 更多格式 - 水墨风格 -->
+      <div class="mt-4 pt-4 border-t border-ink-100 dark:border-ink-700">
         <button
           @click="showMore = !showMore"
-          class="flex items-center gap-2 px-3 py-1.5 text-sm text-gray-500 hover:text-gray-700 bg-gray-50 hover:bg-gray-100 rounded-lg border border-gray-200 transition-all"
+          class="flex items-center gap-2 px-3 py-1.5 text-sm text-ink-500 dark:text-ink-400 hover:text-ink-700 dark:hover:text-ink-200 bg-ink-100 dark:bg-ink-700 hover:bg-ink-200 dark:hover:bg-ink-600 rounded-md border border-ink-200 dark:border-ink-600 transition-all duration-300"
         >
           <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h7" />
           </svg>
           <span>更多格式</span>
           <svg
-            :class="['w-4 h-4 transition-transform', showMore ? 'rotate-180' : '']"
+            :class="['w-4 h-4 transition-transform duration-300', showMore ? 'rotate-180' : '']"
             fill="none"
             stroke="currentColor"
             viewBox="0 0 24 24"
@@ -69,26 +69,31 @@
           </svg>
         </button>
 
-        <!-- 展开的格式列表 -->
+        <!-- 展开的格式列表 - 水墨风格 -->
         <div
           v-show="showMore"
           class="mt-4 space-y-4"
         >
           <div v-for="(formats, category) in groupedFormats" :key="category">
-            <p class="text-xs text-gray-400 mb-2">{{ categoryNames[category] }}</p>
+            <p class="text-xs text-ink-400 dark:text-ink-500 mb-2">{{ categoryNames[category] }}</p>
             <div class="flex flex-wrap gap-2">
               <button
                 v-for="format in formats"
                 :key="format.value"
                 @click="setTargetFormat(format.value as ImageFormat)"
                 :class="[
-                  'px-3 py-1.5 text-sm rounded-lg border transition-all',
+                  'relative px-3 py-1.5 text-sm rounded-md border transition-all duration-300',
                   targetFormat === format.value
-                    ? 'border-blue-200 bg-blue-50 text-blue-600'
-                    : 'border-gray-200 bg-white text-gray-600 hover:border-gray-300 hover:bg-gray-50'
+                    ? 'bg-ink-200 dark:bg-ink-600 text-ink-800 dark:text-ink-100 border-ink-500 dark:border-ink-400 ring-2 ring-ink-700 dark:ring-ink-300'
+                    : 'border-ink-200 dark:border-ink-600 bg-ink-50 dark:bg-ink-800 text-ink-600 dark:text-ink-400 hover:border-ink-300 dark:hover:border-ink-500 hover:bg-ink-100 dark:hover:bg-ink-700'
                 ]"
               >
                 {{ format.label }}
+                <span v-if="targetFormat === format.value" class="absolute -top-1 -right-1 w-3.5 h-3.5 bg-ink-700 dark:bg-ink-300 rounded-full flex items-center justify-center">
+                  <svg class="w-2 h-2 text-white dark:text-ink-800" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M5 13l4 4L19 7" />
+                  </svg>
+                </span>
               </button>
             </div>
           </div>
@@ -96,19 +101,19 @@
       </div>
     </div>
 
-    <!-- 格式说明 -->
-    <div v-if="currentFormat" class="px-5 py-4 bg-gray-50/50 border-t border-gray-100">
+    <!-- 格式说明 - 水墨风格 -->
+    <div v-if="currentFormat" class="px-5 py-4 bg-ink-100/50 dark:bg-ink-700/50 border-t border-ink-100 dark:border-ink-700">
       <div class="flex items-center gap-3">
-        <div class="w-9 h-9 rounded-lg bg-white border border-gray-200 flex items-center justify-center shadow-sm">
-          <span class="text-xs font-bold text-gray-500">{{ currentFormat.extension.toUpperCase().slice(0, 3) }}</span>
+        <div class="w-9 h-9 rounded-md bg-ink-50 dark:bg-ink-800 border border-ink-200 dark:border-ink-600 flex items-center justify-center shadow-ink">
+          <span class="text-xs font-bold text-ink-500 dark:text-ink-400">{{ currentFormat.extension.toUpperCase().slice(0, 3) }}</span>
         </div>
         <div class="flex-1">
-          <p class="text-sm text-gray-600">{{ currentFormat.description }}</p>
+          <p class="text-sm text-ink-600 dark:text-ink-300">{{ currentFormat.description }}</p>
           <div class="flex items-center gap-3 mt-1">
-            <span v-if="currentFormat.supportsQuality" class="text-xs text-gray-400">
+            <span v-if="currentFormat.supportsQuality" class="text-xs text-ink-400 dark:text-ink-500">
               ✓ 质量可调
             </span>
-            <span v-if="supportsTransparency" class="text-xs text-gray-400">
+            <span v-if="supportsTransparency" class="text-xs text-ink-400 dark:text-ink-500">
               ✓ 支持透明
             </span>
           </div>

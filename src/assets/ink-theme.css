@@ -1,0 +1,540 @@
+/* ========================================
+   水墨画主题 - Chinese Ink Painting Theme
+   ======================================== */
+
+/* CSS 变量定义 */
+:root {
+  /* 墨色层次 - 真正的水墨渐变 */
+  --ink-wash-black: #0a0a0a;
+  --ink-wash-dark: #1a1a1a;
+  --ink-wash-medium: #2d2d2d;
+  --ink-wash-light: #4a4a4a;
+  --ink-wash-muted: #6b6b6b;
+  --ink-wash-warm: #8b7355;
+
+  /* 淡金色点缀 */
+  --gold-accent: #c9a962;
+  --gold-light: #d4bc7d;
+  --gold-muted: #e8d9a8;
+  --gold-dim: #a08040;
+
+  /* 宣纸底色 - 真实的纸张质感 */
+  --paper-xuan: #f8f6f1;
+  --paper-cream: #f5f0e6;
+  --paper-warm: #f0e8da;
+  --paper-aged: #e8dfd0;
+  --paper-texture: #ddd5c5;
+
+  /* 传统印章色 */
+  --seal-cinnabar: #b84a4a;
+  --seal-jade: #4a8b6a;
+  --seal-indigo: #4a5a8b;
+
+  /* 水墨晕染 */
+  --ink-blur-sm: blur(2px);
+  --ink-blur-md: blur(6px);
+  --ink-blur-lg: blur(12px);
+  --ink-blur-xl: blur(20px);
+
+  /* 阴影 - 墨影效果 */
+  --shadow-ink-xs: 0 1px 3px rgba(0, 0, 0, 0.08);
+  --shadow-ink-sm: 0 2px 6px rgba(0, 0, 0, 0.12);
+  --shadow-ink-md: 0 4px 12px rgba(0, 0, 0, 0.16);
+  --shadow-ink-lg: 0 8px 24px rgba(0, 0, 0, 0.20);
+  --shadow-ink-xl: 0 12px 40px rgba(0, 0, 0, 0.24);
+
+  /* 淡金色光晕 */
+  --glow-gold: 0 0 24px rgba(201, 169, 98, 0.4);
+  --glow-gold-sm: 0 0 12px rgba(201, 169, 98, 0.25);
+
+  /* 边框 */
+  --border-ink-light: rgba(0, 0, 0, 0.06);
+  --border-ink-medium: rgba(0, 0, 0, 0.10);
+  --border-ink-strong: rgba(0, 0, 0, 0.16);
+  --border-gold: rgba(201, 169, 98, 0.3);
+
+  /* 字体 - 书法与现代结合 */
+  --font-calligraphy: 'Noto Serif SC', 'STKaiti', 'KaiTi', serif;
+  --font-body: 'Noto Serif SC', -apple-system, serif;
+  --font-mono: 'SF Mono', 'Monaco', monospace;
+
+  /* 字重 */
+  --font-light: 300;
+  --font-normal: 400;
+  --font-medium: 500;
+  --font-semibold: 600;
+  --font-bold: 700;
+
+  /* 间距 - 留白美学 */
+  --space-xs: 0.25rem;
+  --space-sm: 0.5rem;
+  --space-md: 1rem;
+  --space-lg: 1.5rem;
+  --space-xl: 2rem;
+  --space-2xl: 3rem;
+  --space-3xl: 4rem;
+  --space-zen: 6rem;
+
+  /* 过渡 - 水墨流动 */
+  --transition-fast: 200ms cubic-bezier(0.4, 0, 0.2, 1);
+  --transition-base: 400ms cubic-bezier(0.4, 0, 0.2, 1);
+  --transition-slow: 600ms cubic-bezier(0.4, 0, 0.2, 1);
+  --transition-ink: 800ms cubic-bezier(0.34, 1.4, 0.64, 1);
+}
+
+/* 深色模式 - 墨黑夜色 */
+html.dark {
+  --ink-wash-black: #f5f5f5;
+  --ink-wash-dark: #e5e5e5;
+  --ink-wash-medium: #d4d4d4;
+  --ink-wash-light: #a3a3a3;
+  --ink-wash-muted: #737373;
+  --ink-wash-warn: #a08b73;
+
+  --paper-xuan: #121210;
+  --paper-cream: #1a1a18;
+  --paper-warm: #242420;
+  --paper-aged: #2d2d28;
+  --paper-texture: #3a3a35;
+
+  --shadow-ink-xs: 0 1px 3px rgba(0, 0, 0, 0.4);
+  --shadow-ink-sm: 0 2px 6px rgba(0, 0, 0, 0.5);
+  --shadow-ink-md: 0 4px 12px rgba(0, 0, 0, 0.6);
+  --shadow-ink-lg: 0 8px 24px rgba(0, 0, 0, 0.7);
+  --shadow-ink-xl: 0 12px 40px rgba(0, 0, 0, 0.8);
+
+  --border-ink-light: rgba(255, 255, 255, 0.06);
+  --border-ink-medium: rgba(255, 255, 255, 0.10);
+  --border-ink-strong: rgba(255, 255, 255, 0.16);
+}
+
+/* ========================================
+   基础样式重置
+   ======================================== */
+*, *::before, *::after {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html, body, #root {
+  height: 100%;
+}
+
+body {
+  font-family: var(--font-body);
+  font-weight: var(--font-normal);
+  background-color: var(--paper-xuan);
+  color: var(--ink-wash-dark);
+  line-height: 1.8;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* 宣纸纹理叠加 - 真实的纸张质感 */
+body::before {
+  content: '';
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  background-image:
+    url("data:image/svg+xml,%3Csvg viewBox='0 0 400 400' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='5' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E");
+  opacity: 0.04;
+  z-index: -1;
+}
+
+/* 墨痕背景效果 */
+body::after {
+  content: '';
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  background:
+    radial-gradient(ellipse 80% 60% at 20% 40%, rgba(201, 169, 98, 0.03) 0%, transparent 50%),
+    radial-gradient(ellipse 60% 80% at 80% 60%, rgba(0, 0, 0, 0.02) 0%, transparent 50%);
+  z-index: -1;
+}
+
+/* ========================================
+   字体设置
+   ======================================== */
+h1, h2, h3, h4, h5, h6 {
+  font-family: var(--font-calligraphy);
+  font-weight: var(--font-semibold);
+  letter-spacing: 0.08em;
+  line-height: 1.3;
+}
+
+h1 {
+  font-size: 2.5rem;
+}
+
+h2 {
+  font-size: 1.875rem;
+}
+
+h3 {
+  font-size: 1.5rem;
+}
+
+/* ========================================
+   水墨动画效果
+   ======================================== */
+
+/* 墨迹晕染出现 */
+@keyframes ink-appear {
+  0% {
+    opacity: 0;
+    filter: blur(var(--ink-blur-md));
+    transform: scale(0.98);
+  }
+  100% {
+    opacity: 1;
+    filter: blur(0);
+    transform: scale(1);
+  }
+}
+
+/* 墨水流动 */
+@keyframes ink-flow {
+  0%, 100% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+}
+
+/* 淡入上浮 */
+@keyframes ink-fade-up {
+  0% {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* 墨滴扩散 */
+@keyframes ink-drop {
+  0% {
+    transform: scale(0.8);
+    opacity: 0;
+  }
+  50% {
+    opacity: 1;
+    transform: scale(1.1);
+  }
+  100% {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+
+/* 印章盖压 */
+@keyframes seal-stamp {
+  0% {
+    transform: scale(1.5);
+    opacity: 0;
+    filter: blur(8px);
+  }
+  50% {
+    opacity: 0.9;
+    filter: blur(2px);
+  }
+  100% {
+    transform: scale(1);
+    opacity: 1;
+    filter: blur(0);
+  }
+}
+
+/* 水墨淡入效果类 */
+.ink-appear {
+  animation: ink-appear var(--transition-ink) ease-out forwards;
+}
+
+.ink-fade-up {
+  animation: ink-fade-up var(--transition-slow) ease-out forwards;
+}
+
+.ink-appear-delay-1 { animation-delay: 0.1s; opacity: 0; }
+.ink-appear-delay-2 { animation-delay: 0.2s; opacity: 0; }
+.ink-appear-delay-3 { animation-delay: 0.3s; opacity: 0; }
+.ink-appear-delay-4 { animation-delay: 0.4s; opacity: 0; }
+.ink-appear-delay-5 { animation-delay: 0.5s; opacity: 0; }
+.ink-appear-delay-6 { animation-delay: 0.6s; opacity: 0; }
+
+/* ========================================
+   组件基础样式
+   ======================================== */
+
+/* 水墨卡片 - 留白设计 */
+.card-ink {
+  background: var(--paper-xuan);
+  border: 1px solid var(--border-ink-light);
+  border-radius: 4px;
+  box-shadow: var(--shadow-ink-sm);
+  position: relative;
+  overflow: hidden;
+}
+
+/* 卡片边缘的墨痕效果 */
+.card-ink::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  border-radius: 4px;
+  pointer-events: none;
+  box-shadow:
+    inset 0 0 0 1px rgba(0, 0, 0, 0.03),
+    inset 0 0 60px rgba(0, 0, 0, 0.02);
+}
+
+/* 按钮 - 水墨风格 */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-sm);
+  padding: var(--space-sm) var(--space-lg);
+  font-family: var(--font-body);
+  font-weight: var(--font-medium);
+  font-size: 0.9rem;
+  letter-spacing: 0.1em;
+  border-radius: 2px;
+  border: none;
+  cursor: pointer;
+  transition: all var(--transition-fast);
+  text-decoration: none;
+  position: relative;
+  overflow: hidden;
+}
+
+/* 墨色按钮 */
+.btn-ink {
+  background: linear-gradient(135deg, var(--ink-wash-dark) 0%, var(--ink-wash-medium) 100%);
+  color: var(--paper-xuan);
+  letter-spacing: 0.15em;
+}
+
+.btn-ink::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255,255,255,0.1), transparent);
+  transition: left var(--transition-slow);
+}
+
+.btn-ink:hover::before {
+  left: 100%;
+}
+
+.btn-ink:hover {
+  box-shadow: var(--shadow-ink-md), var(--glow-gold-sm);
+}
+
+/* 金色按钮 */
+.btn-gold {
+  background: linear-gradient(135deg, var(--gold-accent) 0%, var(--gold-light) 100%);
+  color: var(--ink-wash-black);
+  letter-spacing: 0.15em;
+}
+
+.btn-gold:hover {
+  box-shadow: var(--glow-gold);
+}
+
+/* 文字按钮 */
+.btn-text {
+  background: transparent;
+  color: var(--ink-wash-medium);
+  letter-spacing: 0.1em;
+  padding: var(--space-sm) var(--space-md);
+}
+
+.btn-text:hover {
+  color: var(--ink-wash-dark);
+  background: rgba(0, 0, 0, 0.02);
+}
+
+/* 输入框 */
+.input {
+  width: 100%;
+  padding: var(--space-sm) var(--space-md);
+  font-family: var(--font-body);
+  font-size: 0.95rem;
+  background: var(--paper-xuan);
+  border: 1px solid var(--border-ink-light);
+  border-radius: 2px;
+  color: var(--ink-wash-dark);
+  transition: all var(--transition-fast);
+}
+
+.input:focus {
+  outline: none;
+  border-color: var(--gold-accent);
+  box-shadow: 0 0 0 2px rgba(201, 169, 98, 0.1);
+}
+
+.input::placeholder {
+  color: var(--ink-wash-muted);
+  letter-spacing: 0.05em;
+}
+
+/* ========================================
+   装饰元素
+   ======================================== */
+
+/* 传统印章 - 书法印章效果 */
+.seal {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-family: var(--font-calligraphy);
+  font-weight: var(--font-bold);
+  letter-spacing: 0.05em;
+  border-radius: 2px;
+  position: relative;
+}
+
+/* 朱砂印 */
+.seal-cinnabar {
+  background: var(--seal-cinnabar);
+  color: white;
+  box-shadow:
+    inset 0 0 0 1px rgba(255, 255, 255, 0.2),
+    0 2px 8px rgba(184, 74, 74, 0.3);
+}
+
+/* 玉石印 */
+.seal-jade {
+  background: var(--seal-jade);
+  color: white;
+  box-shadow:
+    inset 0 0 0 1px rgba(255, 255, 255, 0.2),
+    0 2px 8px rgba(74, 139, 106, 0.3);
+}
+
+/* 墨点装饰 */
+.ink-dot {
+  width: 6px;
+  height: 6px;
+  background: var(--ink-wash-medium);
+  border-radius: 50%;
+}
+
+/* 分割线 - 极简 */
+.divider-ink {
+  height: 1px;
+  background: linear-gradient(90deg, transparent, var(--border-ink-medium), transparent);
+  margin: var(--space-xl) 0;
+}
+
+/* 墨条装饰 */
+.ink-bar {
+  width: 40px;
+  height: 3px;
+  background: linear-gradient(90deg, var(--ink-wash-dark), var(--gold-accent));
+  border-radius: 2px;
+}
+
+/* ========================================
+   滚动条样式
+   ======================================== */
+::-webkit-scrollbar {
+  width: 4px;
+  height: 4px;
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--ink-wash-muted);
+  border-radius: 2px;
+  opacity: 0.5;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  opacity: 0.8;
+}
+
+/* ========================================
+   过渡效果
+   ======================================== */
+.fade-enter-active,
+.fade-leave-active {
+  transition: opacity var(--transition-base);
+}
+
+.fade-enter-from,
+.fade-leave-to {
+  opacity: 0;
+}
+
+/* ========================================
+   响应式设计
+   ======================================== */
+@media (max-width: 768px) {
+  :root {
+    --space-zen: 3rem;
+    --space-2xl: 2rem;
+    --space-xl: 1.5rem;
+  }
+
+  h1 {
+    font-size: 2rem;
+  }
+
+  h2 {
+    font-size: 1.5rem;
+  }
+}
+
+/* ========================================
+   实用工具类
+   ======================================== */
+.text-gold {
+  color: var(--gold-accent);
+}
+
+.text-ink {
+  color: var(--ink-wash-dark);
+}
+
+.text-muted {
+  color: var(--ink-wash-muted);
+}
+
+.bg-paper {
+  background-color: var(--paper-xuan);
+}
+
+/* 隐藏元素但保持可访问性 */
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}

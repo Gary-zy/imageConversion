@@ -1,11 +1,11 @@
 <template>
-  <div class="flex flex-col bg-gray-50 rounded-lg p-4">
+  <div class="flex flex-col bg-ink-100 dark:bg-ink-700 rounded-lg p-4">
     <!-- 顶部信息栏 -->
     <div class="flex items-center justify-between mb-4">
-      <div class="text-sm text-gray-600">
+      <div class="text-sm text-ink-600 dark:text-ink-400">
         文档尺寸: {{ pageSize.width }}mm x {{ pageSize.height }}mm
       </div>
-      <div v-if="isLoading" class="text-sm text-blue-500 flex items-center gap-2">
+      <div v-if="isLoading" class="text-sm text-ink-600 dark:text-ink-400 flex items-center gap-2">
         <svg class="animate-spin h-4 w-4" viewBox="0 0 24 24">
           <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4" fill="none" />
           <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z" />
@@ -15,14 +15,14 @@
     </div>
 
     <!-- 错误提示 -->
-    <div v-if="error" class="mb-4 p-3 bg-red-50 border border-red-200 rounded-lg text-red-600 text-sm">
+    <div v-if="error" class="mb-4 p-3 bg-vermillion-50 dark:bg-vermillion-900/20 border border-vermillion-200 dark:border-vermillion-800 rounded-lg text-vermillion-600 dark:text-vermillion-400 text-sm">
       {{ error }}
     </div>
 
     <!-- 预览区域 -->
     <div
       ref="scrollContainerRef"
-      class="flex-1 bg-gray-200 border-2 border-gray-300 rounded-lg overflow-auto"
+      class="flex-1 bg-ink-200 dark:bg-ink-600 border-2 border-ink-300 dark:border-ink-500 rounded-lg overflow-auto"
       :style="{
         minHeight: '500px',
         maxHeight: '70vh'
@@ -37,7 +37,7 @@
           width: '100%',
         }"
       >
-        <div v-if="!converter" class="flex items-center justify-center h-96 text-gray-400">
+        <div v-if="!converter" class="flex items-center justify-center h-96 text-ink-400 dark:text-ink-500">
           请先上传 OFD 文件
         </div>
       </div>
@@ -50,17 +50,17 @@
         <button
           @click="handlePrevPage"
           :disabled="currentPage <= 0 || isLoading"
-          class="px-3 py-1.5 bg-gray-200 hover:bg-gray-300 disabled:opacity-50 disabled:cursor-not-allowed rounded text-sm font-medium transition-colors"
+          class="px-3 py-1.5 bg-ink-200 dark:bg-ink-600 hover:bg-ink-300 dark:hover:bg-ink-500 text-ink-700 dark:text-ink-300 disabled:opacity-50 disabled:cursor-not-allowed rounded-lg text-sm font-medium transition-colors duration-200"
         >
           上一页
         </button>
-        <span class="text-sm font-medium px-3">
+        <span class="text-sm font-medium px-3 text-ink-700 dark:text-ink-300">
           {{ currentPage + 1 }} / {{ pageCount || 0 }}
         </span>
         <button
           @click="handleNextPage"
           :disabled="currentPage >= pageCount - 1 || isLoading"
-          class="px-3 py-1.5 bg-gray-200 hover:bg-gray-300 disabled:opacity-50 disabled:cursor-not-allowed rounded text-sm font-medium transition-colors"
+          class="px-3 py-1.5 bg-ink-200 dark:bg-ink-600 hover:bg-ink-300 dark:hover:bg-ink-500 text-ink-700 dark:text-ink-300 disabled:opacity-50 disabled:cursor-not-allowed rounded-lg text-sm font-medium transition-colors duration-200"
         >
           下一页
         </button>
@@ -68,12 +68,12 @@
 
       <!-- 缩放控制 -->
       <div class="flex items-center gap-2">
-        <span class="text-sm text-gray-600">缩放:</span>
+        <span class="text-sm text-ink-600 dark:text-ink-400">缩放:</span>
         <select
           :value="scale"
           @change="handleScaleChange(parseFloat(($event.target as HTMLSelectElement).value))"
           :disabled="isLoading"
-          class="px-2 py-1.5 border border-gray-300 rounded text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 disabled:opacity-50"
+          class="px-2 py-1.5 border border-ink-300 dark:border-ink-600 bg-white dark:bg-ink-700 text-ink-800 dark:text-ink-100 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-ink-500 dark:focus:ring-ink-400 disabled:opacity-50 transition-colors duration-200"
         >
           <option v-for="s in scaleOptions" :key="s" :value="s">
             {{ Math.round(s * 100) }}%

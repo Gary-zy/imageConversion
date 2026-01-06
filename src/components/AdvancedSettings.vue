@@ -1,10 +1,10 @@
 <template>
-  <div class="bg-white rounded-xl border border-gray-200 shadow-sm">
+  <div class="bg-ink-50 dark:bg-ink-800 rounded-lg border border-ink-200 dark:border-ink-700 shadow-ink dark:shadow-ink-dark">
     <!-- 标题栏 -->
-    <div class="px-5 py-4 border-b border-gray-100 flex items-center justify-between">
-      <h3 class="font-medium text-gray-800">高级设置</h3>
-      <div class="flex items-center gap-2 text-sm text-gray-500">
-        <span class="w-1.5 h-1.5 rounded-full" :class="hasActiveSettings ? 'bg-blue-500' : 'bg-gray-300'"></span>
+    <div class="px-5 py-4 border-b border-ink-200 dark:border-ink-700 flex items-center justify-between">
+      <h3 class="font-serif font-medium text-ink-800 dark:text-ink-100">高级设置</h3>
+      <div class="flex items-center gap-2 text-sm text-ink-500 dark:text-ink-400">
+        <span class="w-1.5 h-1.5 rounded-full" :class="hasActiveSettings ? 'bg-vermillion-500' : 'bg-ink-300 dark:bg-ink-600'"></span>
         {{ hasActiveSettings ? '已配置' : '默认' }}
       </div>
     </div>
@@ -17,26 +17,26 @@
           :key="tab.id"
           @click="activeTab = activeTab === tab.id ? '' : tab.id"
           :class="[
-            'group relative py-3 rounded-xl border transition-all',
+            'group relative py-3 rounded-lg border transition-all duration-300',
             activeTab === tab.id
-              ? 'border-blue-200 bg-gradient-to-b from-blue-50 to-white shadow-sm'
-              : 'border-gray-100 bg-gray-50/50 hover:bg-white hover:border-gray-200 hover:shadow-sm'
+              ? 'border-ink-400 dark:border-ink-500 bg-gradient-to-b from-ink-100 to-ink-50 dark:from-ink-700 dark:to-ink-800 shadow-ink'
+              : 'border-ink-200 dark:border-ink-600 bg-ink-100/50 dark:bg-ink-700/50 hover:bg-ink-50 dark:hover:bg-ink-700 hover:border-ink-300 dark:hover:border-ink-500 hover:shadow-ink'
           ]"
         >
           <div class="text-center">
-            <div :class="['w-6 h-6 mx-auto mb-1', activeTab === tab.id ? 'text-blue-500' : 'text-gray-400']">
+            <div :class="['w-6 h-6 mx-auto mb-1', activeTab === tab.id ? 'text-ink-700 dark:text-ink-200' : 'text-ink-400 dark:text-ink-500']">
               <component :is="tab.icon" />
             </div>
-            <p :class="['text-xs font-medium', activeTab === tab.id ? 'text-blue-600' : 'text-gray-600']">
+            <p :class="['text-xs font-medium', activeTab === tab.id ? 'text-ink-800 dark:text-ink-100' : 'text-ink-600 dark:text-ink-400']">
               {{ tab.label }}
             </p>
           </div>
           <!-- 选中指示 -->
           <div
             v-if="activeTab === tab.id"
-            class="absolute -top-1 -right-1 w-4 h-4 bg-blue-500 rounded-full flex items-center justify-center shadow-sm"
+            class="absolute -top-1 -right-1 w-4 h-4 bg-ink-700 dark:bg-ink-300 rounded-full flex items-center justify-center shadow-ink"
           >
-            <svg class="w-2.5 h-2.5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <svg class="w-2.5 h-2.5 text-white dark:text-ink-800" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M5 13l4 4L19 7" />
             </svg>
           </div>
@@ -44,17 +44,17 @@
       </div>
 
       <!-- 更多设置 -->
-      <div class="mt-4 pt-4 border-t border-gray-100">
+      <div class="mt-4 pt-4 border-t border-ink-200 dark:border-ink-700">
         <button
           @click="showMore = !showMore"
-          class="flex items-center gap-2 px-3 py-1.5 text-sm text-gray-500 hover:text-gray-700 bg-gray-50 hover:bg-gray-100 rounded-lg border border-gray-200 transition-all"
+          class="flex items-center gap-2 px-3 py-1.5 text-sm text-ink-500 dark:text-ink-400 hover:text-ink-700 dark:hover:text-ink-200 bg-ink-100 dark:bg-ink-700 hover:bg-ink-200 dark:hover:bg-ink-600 rounded-lg border border-ink-200 dark:border-ink-600 transition-all duration-300"
         >
           <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
           </svg>
           <span>更多设置</span>
           <svg
-            :class="['w-4 h-4 transition-transform', showMore ? 'rotate-180' : '']"
+            :class="['w-4 h-4 transition-transform duration-300', showMore ? 'rotate-180' : '']"
             fill="none"
             stroke="currentColor"
             viewBox="0 0 24 24"
@@ -69,10 +69,10 @@
             :key="tab.id"
             @click="activeTab = activeTab === tab.id ? '' : tab.id"
             :class="[
-              'px-3 py-1.5 text-sm rounded-lg border transition-all',
+              'px-3 py-1.5 text-sm rounded-lg border transition-all duration-300',
               activeTab === tab.id
-                ? 'border-blue-200 bg-blue-50 text-blue-600'
-                : 'border-gray-200 bg-white text-gray-600 hover:border-gray-300 hover:bg-gray-50'
+                ? 'border-ink-400 dark:border-ink-500 bg-ink-200 dark:bg-ink-600 text-ink-800 dark:text-ink-100'
+                : 'border-ink-200 dark:border-ink-600 bg-ink-50 dark:bg-ink-700 text-ink-600 dark:text-ink-400 hover:border-ink-300 dark:hover:border-ink-500 hover:bg-ink-100 dark:hover:bg-ink-600'
             ]"
           >
             {{ tab.label }}
@@ -81,13 +81,13 @@
       </div>
 
       <!-- 设置内容区域 -->
-      <div v-if="activeTab" class="mt-4 pt-4 border-t border-gray-100">
+      <div v-if="activeTab" class="mt-4 pt-4 border-t border-ink-200 dark:border-ink-700">
         <div class="max-h-80 overflow-y-auto pr-1">
           <!-- 基础设置 -->
           <div v-if="activeTab === 'basic'" class="space-y-5">
             <!-- 质量调整 -->
             <div v-if="supportsQuality">
-              <label class="block text-sm font-medium text-gray-700 mb-2">
+              <label class="block text-sm font-medium text-ink-700 dark:text-ink-300 mb-2">
                 图片质量: {{ settings.quality }}%
               </label>
               <input
@@ -95,9 +95,9 @@
                 min="1"
                 max="100"
                 v-model.number="settings.quality"
-                class="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer accent-blue-500"
+                class="w-full h-2 bg-ink-200 dark:bg-ink-600 rounded-lg appearance-none cursor-pointer accent-ink-700 dark:accent-ink-300"
               />
-              <div class="flex justify-between text-xs text-gray-400 mt-1">
+              <div class="flex justify-between text-xs text-ink-400 dark:text-ink-500 mt-1">
                 <span>最小文件</span>
                 <span>最高质量</span>
               </div>
@@ -105,24 +105,24 @@
 
             <!-- 文件名设置 -->
             <div>
-              <label class="block text-sm font-medium text-gray-700 mb-2">文件名设置</label>
+              <label class="block text-sm font-medium text-ink-700 dark:text-ink-300 mb-2">文件名设置</label>
               <div class="flex items-center gap-2">
                 <div class="flex-1">
-                  <label class="block text-xs text-gray-500 mb-1">前缀</label>
+                  <label class="block text-xs text-ink-500 dark:text-ink-400 mb-1">前缀</label>
                   <input
                     type="text"
                     v-model="settings.fileNamePrefix"
                     placeholder="如: converted_"
-                    class="w-full px-3 py-2 border border-gray-200 rounded-lg text-sm focus:ring-blue-500 focus:border-blue-500"
+                    class="w-full px-3 py-2 border border-ink-200 dark:border-ink-600 bg-white dark:bg-ink-700 text-ink-800 dark:text-ink-100 rounded-lg text-sm focus:ring-ink-500 focus:border-ink-500 dark:focus:border-ink-400 transition-colors duration-200"
                   />
                 </div>
                 <div class="flex-1">
-                  <label class="block text-xs text-gray-500 mb-1">后缀</label>
+                  <label class="block text-xs text-ink-500 dark:text-ink-400 mb-1">后缀</label>
                   <input
                     type="text"
                     v-model="settings.fileNameSuffix"
                     placeholder="如: _converted"
-                    class="w-full px-3 py-2 border border-gray-200 rounded-lg text-sm focus:ring-blue-500 focus:border-blue-500"
+                    class="w-full px-3 py-2 border border-ink-200 dark:border-ink-600 bg-white dark:bg-ink-700 text-ink-800 dark:text-ink-100 rounded-lg text-sm focus:ring-ink-500 focus:border-ink-500 dark:focus:border-ink-400 transition-colors duration-200"
                   />
                 </div>
               </div>
@@ -130,24 +130,24 @@
 
             <!-- 背景色 -->
             <div>
-              <label class="block text-sm font-medium text-gray-700 mb-2">背景色</label>
+              <label class="block text-sm font-medium text-ink-700 dark:text-ink-300 mb-2">背景色</label>
               <div class="flex items-center gap-3">
                 <input
                   type="color"
                   :value="settings.backgroundColor || '#ffffff'"
                   @input="updateSettings({ backgroundColor: ($event.target as HTMLInputElement).value })"
-                  class="w-10 h-10 rounded-lg border border-gray-200 cursor-pointer"
+                  class="w-10 h-10 rounded-lg border border-ink-200 dark:border-ink-600 cursor-pointer"
                 />
                 <input
                   type="text"
                   :value="settings.backgroundColor || ''"
                   @input="updateSettings({ backgroundColor: ($event.target as HTMLInputElement).value })"
                   placeholder="#FFFFFF 或留空透明"
-                  class="flex-1 px-3 py-2 border border-gray-200 rounded-lg text-sm"
+                  class="flex-1 px-3 py-2 border border-ink-200 dark:border-ink-600 bg-white dark:bg-ink-700 text-ink-800 dark:text-ink-100 rounded-lg text-sm transition-colors duration-200"
                 />
                 <button
                   @click="updateSettings({ backgroundColor: '' })"
-                  class="px-3 py-2 text-sm text-gray-500 bg-gray-50 rounded-lg hover:bg-gray-100 border border-gray-200"
+                  class="px-3 py-2 text-sm text-ink-500 dark:text-ink-400 bg-ink-100 dark:bg-ink-700 rounded-lg hover:bg-ink-200 dark:hover:bg-ink-600 border border-ink-200 dark:border-ink-600 transition-colors duration-200"
                 >
                   清除
                 </button>
@@ -162,28 +162,28 @@
                 type="checkbox"
                 id="enableResize"
                 v-model="settings.enableResize"
-                class="w-4 h-4 text-blue-500 border-gray-300 rounded focus:ring-blue-500"
+                class="w-4 h-4 text-ink-700 dark:text-ink-300 border-ink-300 dark:border-ink-600 rounded focus:ring-ink-500"
               />
-              <label for="enableResize" class="text-sm font-medium text-gray-700">启用尺寸调整</label>
+              <label for="enableResize" class="text-sm font-medium text-ink-700 dark:text-ink-300">启用尺寸调整</label>
             </div>
 
             <div v-if="settings.enableResize" class="space-y-4">
               <div class="flex items-center gap-3">
                 <div class="flex-1">
-                  <label class="block text-xs text-gray-500 mb-1">宽度 (px)</label>
+                  <label class="block text-xs text-ink-500 dark:text-ink-400 mb-1">宽度 (px)</label>
                   <input
                     type="number"
                     v-model.number="settings.resizeWidth"
-                    class="w-full px-3 py-2 border border-gray-200 rounded-lg text-sm"
+                    class="w-full px-3 py-2 border border-ink-200 dark:border-ink-600 bg-white dark:bg-ink-700 text-ink-800 dark:text-ink-100 rounded-lg text-sm transition-colors duration-200"
                   />
                 </div>
-                <span class="text-gray-400 mt-5">×</span>
+                <span class="text-ink-400 dark:text-ink-500 mt-5">×</span>
                 <div class="flex-1">
-                  <label class="block text-xs text-gray-500 mb-1">高度 (px)</label>
+                  <label class="block text-xs text-ink-500 dark:text-ink-400 mb-1">高度 (px)</label>
                   <input
                     type="number"
                     v-model.number="settings.resizeHeight"
-                    class="w-full px-3 py-2 border border-gray-200 rounded-lg text-sm"
+                    class="w-full px-3 py-2 border border-ink-200 dark:border-ink-600 bg-white dark:bg-ink-700 text-ink-800 dark:text-ink-100 rounded-lg text-sm transition-colors duration-200"
                   />
                 </div>
               </div>
@@ -193,20 +193,20 @@
                   type="checkbox"
                   id="maintainAspectRatio"
                   v-model="settings.maintainAspectRatio"
-                  class="w-4 h-4 text-blue-500 border-gray-300 rounded"
+                  class="w-4 h-4 text-ink-700 dark:text-ink-300 border-ink-300 dark:border-ink-600 rounded"
                 />
-                <label for="maintainAspectRatio" class="text-sm text-gray-600">保持宽高比</label>
+                <label for="maintainAspectRatio" class="text-sm text-ink-600 dark:text-ink-400">保持宽高比</label>
               </div>
 
               <!-- 常用尺寸 -->
               <div>
-                <p class="text-xs text-gray-400 mb-2">常用尺寸</p>
+                <p class="text-xs text-ink-400 dark:text-ink-500 mb-2">常用尺寸</p>
                 <div class="flex flex-wrap gap-2">
                   <button
                     v-for="size in quickSizes"
                     :key="size.label"
                     @click="updateSettings({ resizeWidth: size.width, resizeHeight: size.height })"
-                    class="px-2 py-1 text-xs text-gray-600 bg-gray-50 rounded-lg hover:bg-gray-100 border border-gray-200"
+                    class="px-2 py-1 text-xs text-ink-600 dark:text-ink-400 bg-ink-100 dark:bg-ink-700 rounded-lg hover:bg-ink-200 dark:hover:bg-ink-600 border border-ink-200 dark:border-ink-600 transition-colors duration-200"
                   >
                     {{ size.label }}
                   </button>
@@ -218,34 +218,39 @@
           <!-- 变换设置 -->
           <div v-if="activeTab === 'transform'" class="space-y-5">
             <div>
-              <label class="block text-sm font-medium text-gray-700 mb-2">旋转角度</label>
+              <label class="block text-sm font-medium text-ink-700 dark:text-ink-300 mb-2">旋转角度</label>
               <div class="flex gap-2">
                 <button
                   v-for="angle in rotateAngles"
                   :key="angle.value"
                   @click="updateSettings({ rotate: angle.value })"
                   :class="[
-                    'flex-1 py-2 rounded-lg text-sm font-medium transition-all',
+                    'relative flex-1 py-2 rounded-lg text-sm font-medium transition-all duration-300 border',
                     settings.rotate === angle.value
-                      ? 'bg-blue-500 text-white'
-                      : 'bg-gray-50 text-gray-600 hover:bg-gray-100 border border-gray-200'
+                      ? 'bg-ink-200 dark:bg-ink-600 text-ink-800 dark:text-ink-100 border-ink-500 dark:border-ink-400 ring-2 ring-ink-700 dark:ring-ink-300'
+                      : 'bg-ink-100 dark:bg-ink-700 text-ink-600 dark:text-ink-400 hover:bg-ink-200 dark:hover:bg-ink-600 border-ink-200 dark:border-ink-600'
                   ]"
                 >
                   {{ angle.label }}
+                  <span v-if="settings.rotate === angle.value" class="absolute -top-1 -right-1 w-4 h-4 bg-ink-700 dark:bg-ink-300 rounded-full flex items-center justify-center">
+                    <svg class="w-2.5 h-2.5 text-white dark:text-ink-800" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M5 13l4 4L19 7" />
+                    </svg>
+                  </span>
                 </button>
               </div>
             </div>
 
             <div>
-              <label class="block text-sm font-medium text-gray-700 mb-2">翻转</label>
+              <label class="block text-sm font-medium text-ink-700 dark:text-ink-300 mb-2">翻转</label>
               <div class="flex gap-3">
                 <label class="flex items-center gap-2 cursor-pointer">
-                  <input type="checkbox" v-model="settings.flip" class="w-4 h-4 text-blue-500 rounded" />
-                  <span class="text-sm text-gray-600">水平翻转</span>
+                  <input type="checkbox" v-model="settings.flip" class="w-4 h-4 text-ink-700 dark:text-ink-300 rounded" />
+                  <span class="text-sm text-ink-600 dark:text-ink-400">水平翻转</span>
                 </label>
                 <label class="flex items-center gap-2 cursor-pointer">
-                  <input type="checkbox" v-model="settings.flop" class="w-4 h-4 text-blue-500 rounded" />
-                  <span class="text-sm text-gray-600">垂直翻转</span>
+                  <input type="checkbox" v-model="settings.flop" class="w-4 h-4 text-ink-700 dark:text-ink-300 rounded" />
+                  <span class="text-sm text-ink-600 dark:text-ink-400">垂直翻转</span>
                 </label>
               </div>
             </div>
@@ -258,46 +263,46 @@
                 type="checkbox"
                 id="enableAdjustment"
                 v-model="settings.enableAdjustment"
-                class="w-4 h-4 text-blue-500 rounded"
+                class="w-4 h-4 text-ink-700 dark:text-ink-300 rounded"
               />
-              <label for="enableAdjustment" class="text-sm font-medium text-gray-700">启用图片调整</label>
+              <label for="enableAdjustment" class="text-sm font-medium text-ink-700 dark:text-ink-300">启用图片调整</label>
             </div>
 
             <div class="space-y-4" :class="{ 'opacity-50': !settings.enableAdjustment }">
               <div>
                 <div class="flex justify-between text-sm mb-1">
-                  <span class="text-gray-600">亮度</span>
-                  <span class="text-gray-400">{{ settings.brightness > 0 ? '+' : '' }}{{ settings.brightness }}</span>
+                  <span class="text-ink-600 dark:text-ink-400">亮度</span>
+                  <span class="text-ink-400 dark:text-ink-500">{{ settings.brightness > 0 ? '+' : '' }}{{ settings.brightness }}</span>
                 </div>
                 <input
                   type="range" min="-100" max="100"
                   v-model.number="settings.brightness"
                   :disabled="!settings.enableAdjustment"
-                  class="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer accent-blue-500"
+                  class="w-full h-2 bg-ink-200 dark:bg-ink-600 rounded-lg appearance-none cursor-pointer accent-ink-700 dark:accent-ink-300"
                 />
               </div>
               <div>
                 <div class="flex justify-between text-sm mb-1">
-                  <span class="text-gray-600">对比度</span>
-                  <span class="text-gray-400">{{ settings.contrast > 0 ? '+' : '' }}{{ settings.contrast }}</span>
+                  <span class="text-ink-600 dark:text-ink-400">对比度</span>
+                  <span class="text-ink-400 dark:text-ink-500">{{ settings.contrast > 0 ? '+' : '' }}{{ settings.contrast }}</span>
                 </div>
                 <input
                   type="range" min="-100" max="100"
                   v-model.number="settings.contrast"
                   :disabled="!settings.enableAdjustment"
-                  class="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer accent-blue-500"
+                  class="w-full h-2 bg-ink-200 dark:bg-ink-600 rounded-lg appearance-none cursor-pointer accent-ink-700 dark:accent-ink-300"
                 />
               </div>
               <div>
                 <div class="flex justify-between text-sm mb-1">
-                  <span class="text-gray-600">饱和度</span>
-                  <span class="text-gray-400">{{ settings.saturation > 0 ? '+' : '' }}{{ settings.saturation }}</span>
+                  <span class="text-ink-600 dark:text-ink-400">饱和度</span>
+                  <span class="text-ink-400 dark:text-ink-500">{{ settings.saturation > 0 ? '+' : '' }}{{ settings.saturation }}</span>
                 </div>
                 <input
                   type="range" min="-100" max="100"
                   v-model.number="settings.saturation"
                   :disabled="!settings.enableAdjustment"
-                  class="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer accent-blue-500"
+                  class="w-full h-2 bg-ink-200 dark:bg-ink-600 rounded-lg appearance-none cursor-pointer accent-ink-700 dark:accent-ink-300"
                 />
               </div>
             </div>
@@ -306,47 +311,47 @@
           <!-- 滤镜设置 -->
           <div v-if="activeTab === 'filter'" class="space-y-4">
             <div class="flex items-center gap-2 mb-2">
-              <input type="checkbox" id="enableFilter" v-model="settings.enableFilter" class="w-4 h-4 text-blue-500 rounded" />
-              <label for="enableFilter" class="text-sm font-medium text-gray-700">启用滤镜</label>
+              <input type="checkbox" id="enableFilter" v-model="settings.enableFilter" class="w-4 h-4 text-ink-700 dark:text-ink-300 rounded" />
+              <label for="enableFilter" class="text-sm font-medium text-ink-700 dark:text-ink-300">启用滤镜</label>
             </div>
 
             <div class="space-y-4" :class="{ 'opacity-50': !settings.enableFilter }">
               <div>
                 <div class="flex justify-between text-sm mb-1">
-                  <span class="text-gray-600">模糊</span>
-                  <span class="text-gray-400">{{ settings.blur }}</span>
+                  <span class="text-ink-600 dark:text-ink-400">模糊</span>
+                  <span class="text-ink-400 dark:text-ink-500">{{ settings.blur }}</span>
                 </div>
                 <input
                   type="range" min="0" max="100"
                   v-model.number="settings.blur"
                   :disabled="!settings.enableFilter"
-                  class="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer accent-blue-500"
+                  class="w-full h-2 bg-ink-200 dark:bg-ink-600 rounded-lg appearance-none cursor-pointer accent-ink-700 dark:accent-ink-300"
                 />
               </div>
               <div>
                 <div class="flex justify-between text-sm mb-1">
-                  <span class="text-gray-600">锐化</span>
-                  <span class="text-gray-400">{{ settings.sharpen }}</span>
+                  <span class="text-ink-600 dark:text-ink-400">锐化</span>
+                  <span class="text-ink-400 dark:text-ink-500">{{ settings.sharpen }}</span>
                 </div>
                 <input
                   type="range" min="0" max="100"
                   v-model.number="settings.sharpen"
                   :disabled="!settings.enableFilter"
-                  class="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer accent-blue-500"
+                  class="w-full h-2 bg-ink-200 dark:bg-ink-600 rounded-lg appearance-none cursor-pointer accent-ink-700 dark:accent-ink-300"
                 />
               </div>
               <div class="flex flex-wrap gap-3">
                 <label class="flex items-center gap-2 cursor-pointer">
-                  <input type="checkbox" v-model="settings.grayscale" :disabled="!settings.enableFilter" class="w-4 h-4 text-blue-500 rounded" />
-                  <span class="text-sm text-gray-600">灰度</span>
+                  <input type="checkbox" v-model="settings.grayscale" :disabled="!settings.enableFilter" class="w-4 h-4 text-ink-700 dark:text-ink-300 rounded" />
+                  <span class="text-sm text-ink-600 dark:text-ink-400">灰度</span>
                 </label>
                 <label class="flex items-center gap-2 cursor-pointer">
-                  <input type="checkbox" v-model="settings.sepia" :disabled="!settings.enableFilter" class="w-4 h-4 text-blue-500 rounded" />
-                  <span class="text-sm text-gray-600">复古</span>
+                  <input type="checkbox" v-model="settings.sepia" :disabled="!settings.enableFilter" class="w-4 h-4 text-ink-700 dark:text-ink-300 rounded" />
+                  <span class="text-sm text-ink-600 dark:text-ink-400">复古</span>
                 </label>
                 <label class="flex items-center gap-2 cursor-pointer">
-                  <input type="checkbox" v-model="settings.invert" :disabled="!settings.enableFilter" class="w-4 h-4 text-blue-500 rounded" />
-                  <span class="text-sm text-gray-600">反色</span>
+                  <input type="checkbox" v-model="settings.invert" :disabled="!settings.enableFilter" class="w-4 h-4 text-ink-700 dark:text-ink-300 rounded" />
+                  <span class="text-sm text-ink-600 dark:text-ink-400">反色</span>
                 </label>
               </div>
             </div>
@@ -355,8 +360,8 @@
           <!-- 水印设置 -->
           <div v-if="activeTab === 'watermark'" class="space-y-4">
             <div class="flex items-center gap-2 mb-2">
-              <input type="checkbox" id="enableWatermark" v-model="settings.enableWatermark" class="w-4 h-4 text-blue-500 rounded" />
-              <label for="enableWatermark" class="text-sm font-medium text-gray-700">启用水印</label>
+              <input type="checkbox" id="enableWatermark" v-model="settings.enableWatermark" class="w-4 h-4 text-ink-700 dark:text-ink-300 rounded" />
+              <label for="enableWatermark" class="text-sm font-medium text-ink-700 dark:text-ink-300">启用水印</label>
             </div>
 
             <div :class="{ 'opacity-50 pointer-events-none': !settings.enableWatermark }">
@@ -365,24 +370,34 @@
                 <button
                   @click="updateSettings({ watermarkType: 'text' })"
                   :class="[
-                    'flex-1 py-2 rounded-lg text-sm font-medium transition-all',
+                    'relative flex-1 py-2 rounded-lg text-sm font-medium transition-all duration-300 border',
                     settings.watermarkType === 'text'
-                      ? 'bg-blue-500 text-white'
-                      : 'bg-gray-50 text-gray-600 hover:bg-gray-100 border border-gray-200'
+                      ? 'bg-ink-200 dark:bg-ink-600 text-ink-800 dark:text-ink-100 border-ink-500 dark:border-ink-400 ring-2 ring-ink-700 dark:ring-ink-300'
+                      : 'bg-ink-100 dark:bg-ink-700 text-ink-600 dark:text-ink-400 hover:bg-ink-200 dark:hover:bg-ink-600 border-ink-200 dark:border-ink-600'
                   ]"
                 >
                   文字水印
+                  <span v-if="settings.watermarkType === 'text'" class="absolute -top-1 -right-1 w-4 h-4 bg-ink-700 dark:bg-ink-300 rounded-full flex items-center justify-center">
+                    <svg class="w-2.5 h-2.5 text-white dark:text-ink-800" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M5 13l4 4L19 7" />
+                    </svg>
+                  </span>
                 </button>
                 <button
                   @click="updateSettings({ watermarkType: 'image' })"
                   :class="[
-                    'flex-1 py-2 rounded-lg text-sm font-medium transition-all',
+                    'relative flex-1 py-2 rounded-lg text-sm font-medium transition-all duration-300 border',
                     settings.watermarkType === 'image'
-                      ? 'bg-blue-500 text-white'
-                      : 'bg-gray-50 text-gray-600 hover:bg-gray-100 border border-gray-200'
+                      ? 'bg-ink-200 dark:bg-ink-600 text-ink-800 dark:text-ink-100 border-ink-500 dark:border-ink-400 ring-2 ring-ink-700 dark:ring-ink-300'
+                      : 'bg-ink-100 dark:bg-ink-700 text-ink-600 dark:text-ink-400 hover:bg-ink-200 dark:hover:bg-ink-600 border-ink-200 dark:border-ink-600'
                   ]"
                 >
                   图片水印
+                  <span v-if="settings.watermarkType === 'image'" class="absolute -top-1 -right-1 w-4 h-4 bg-ink-700 dark:bg-ink-300 rounded-full flex items-center justify-center">
+                    <svg class="w-2.5 h-2.5 text-white dark:text-ink-800" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M5 13l4 4L19 7" />
+                    </svg>
+                  </span>
                 </button>
               </div>
 
@@ -393,24 +408,24 @@
                     type="text"
                     v-model="settings.watermarkText"
                     placeholder="输入水印文字"
-                    class="w-full px-3 py-2 border border-gray-200 rounded-lg text-sm"
+                    class="w-full px-3 py-2 border border-ink-200 dark:border-ink-600 bg-white dark:bg-ink-700 text-ink-800 dark:text-ink-100 rounded-lg text-sm transition-colors duration-200"
                   />
                   <div class="flex items-center gap-3">
                     <input
                       type="color"
                       :value="settings.watermarkColor"
                       @input="updateSettings({ watermarkColor: ($event.target as HTMLInputElement).value })"
-                      class="w-10 h-10 rounded-lg border border-gray-200 cursor-pointer"
+                      class="w-10 h-10 rounded-lg border border-ink-200 dark:border-ink-600 cursor-pointer"
                     />
                     <div class="flex-1">
                       <div class="flex justify-between text-sm mb-1">
-                        <span class="text-gray-600">字体大小</span>
-                        <span class="text-gray-400">{{ settings.watermarkFontSize }}px</span>
+                        <span class="text-ink-600 dark:text-ink-400">字体大小</span>
+                        <span class="text-ink-400 dark:text-ink-500">{{ settings.watermarkFontSize }}px</span>
                       </div>
                       <input
                         type="range" min="8" max="200"
                         v-model.number="settings.watermarkFontSize"
-                        class="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer accent-blue-500"
+                        class="w-full h-2 bg-ink-200 dark:bg-ink-600 rounded-lg appearance-none cursor-pointer accent-ink-700 dark:accent-ink-300"
                       />
                     </div>
                   </div>
@@ -425,8 +440,8 @@
                   @dragleave="isDragging = false"
                   @drop.prevent="handleDrop"
                   :class="[
-                    'border-2 border-dashed rounded-lg p-4 text-center cursor-pointer transition-all',
-                    isDragging ? 'border-blue-400 bg-blue-50' : 'border-gray-200 hover:border-gray-300'
+                    'border-2 border-dashed rounded-lg p-4 text-center cursor-pointer transition-all duration-300',
+                    isDragging ? 'border-ink-500 dark:border-ink-400 bg-ink-100 dark:bg-ink-700' : 'border-ink-300 dark:border-ink-600 hover:border-ink-400 dark:hover:border-ink-500'
                   ]"
                 >
                   <input
@@ -437,18 +452,18 @@
                     class="hidden"
                   />
                   <div v-if="!settings.watermarkImage">
-                    <svg class="w-8 h-8 mx-auto text-gray-400 mb-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <svg class="w-8 h-8 mx-auto text-ink-400 dark:text-ink-500 mb-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
                     </svg>
-                    <p class="text-sm text-gray-500">点击或拖拽上传</p>
+                    <p class="text-sm text-ink-500 dark:text-ink-400">点击或拖拽上传</p>
                   </div>
                   <div v-else class="flex items-center gap-3">
-                    <img :src="settings.watermarkImage" alt="水印" class="h-12 w-12 object-contain border rounded bg-white" />
+                    <img :src="settings.watermarkImage" alt="水印" class="h-12 w-12 object-contain border border-ink-200 dark:border-ink-600 rounded bg-white dark:bg-ink-700" />
                     <div class="flex-1 text-left">
-                      <p class="text-sm text-gray-700">已上传</p>
-                      <p class="text-xs text-gray-400">{{ settings.watermarkImageWidth }} × {{ settings.watermarkImageHeight }}</p>
+                      <p class="text-sm text-ink-700 dark:text-ink-300">已上传</p>
+                      <p class="text-xs text-ink-400 dark:text-ink-500">{{ settings.watermarkImageWidth }} × {{ settings.watermarkImageHeight }}</p>
                     </div>
-                    <button @click.stop="clearWatermarkImage" class="p-1.5 text-gray-400 hover:text-red-500 rounded">
+                    <button @click.stop="clearWatermarkImage" class="p-1.5 text-ink-400 dark:text-ink-500 hover:text-vermillion-500 dark:hover:text-vermillion-400 rounded transition-colors duration-200">
                       <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
                       </svg>
@@ -459,17 +474,17 @@
 
               <!-- 水印样式 -->
               <div class="mt-4">
-                <p class="text-xs text-gray-400 mb-2">水印样式</p>
+                <p class="text-xs text-ink-400 dark:text-ink-500 mb-2">水印样式</p>
                 <div class="grid grid-cols-4 gap-2">
                   <button
                     v-for="type in watermarkStyles"
                     :key="type.value"
                     @click="updateSettings(settings.watermarkType === 'text' ? { watermarkStyleType: type.value as any } : { watermarkImageStyleType: type.value as any })"
                     :class="[
-                      'py-1.5 text-xs rounded-lg transition-all',
+                      'relative py-1.5 text-xs rounded-lg transition-all duration-300 border',
                       (settings.watermarkType === 'text' ? settings.watermarkStyleType : settings.watermarkImageStyleType) === type.value
-                        ? 'bg-blue-500 text-white'
-                        : 'bg-gray-50 text-gray-600 hover:bg-gray-100 border border-gray-200'
+                        ? 'bg-ink-200 dark:bg-ink-600 text-ink-800 dark:text-ink-100 border-ink-500 dark:border-ink-400 ring-2 ring-ink-700 dark:ring-ink-300'
+                        : 'bg-ink-100 dark:bg-ink-700 text-ink-600 dark:text-ink-400 hover:bg-ink-200 dark:hover:bg-ink-600 border-ink-200 dark:border-ink-600'
                     ]"
                   >
                     {{ type.label }}
@@ -480,14 +495,14 @@
               <!-- 透明度 -->
               <div class="mt-4">
                 <div class="flex justify-between text-sm mb-1">
-                  <span class="text-gray-600">透明度</span>
-                  <span class="text-gray-400">{{ Math.round((settings.watermarkType === 'text' ? settings.watermarkOpacity : settings.watermarkImageOpacity) * 100) }}%</span>
+                  <span class="text-ink-600 dark:text-ink-400">透明度</span>
+                  <span class="text-ink-400 dark:text-ink-500">{{ Math.round((settings.watermarkType === 'text' ? settings.watermarkOpacity : settings.watermarkImageOpacity) * 100) }}%</span>
                 </div>
                 <input
                   type="range" min="0" max="100"
                   :value="(settings.watermarkType === 'text' ? settings.watermarkOpacity : settings.watermarkImageOpacity) * 100"
                   @input="handleOpacityChange"
-                  class="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer accent-blue-500"
+                  class="w-full h-2 bg-ink-200 dark:bg-ink-600 rounded-lg appearance-none cursor-pointer accent-ink-700 dark:accent-ink-300"
                 />
               </div>
             </div>
@@ -496,25 +511,30 @@
           <!-- 图标设置 -->
           <div v-if="activeTab === 'icon'">
             <div v-if="isIconFormat" class="space-y-3">
-              <p class="text-sm font-medium text-gray-700">图标尺寸</p>
+              <p class="text-sm font-medium text-ink-700 dark:text-ink-300">图标尺寸</p>
               <div class="grid grid-cols-4 gap-2">
                 <button
                   v-for="size in iconSizes"
                   :key="size"
                   @click="toggleIconSize(size)"
                   :class="[
-                    'py-2 text-sm rounded-lg transition-all',
+                    'relative py-2 text-sm rounded-lg transition-all duration-300 border',
                     settings.iconSizes.includes(size)
-                      ? 'bg-blue-500 text-white'
-                      : 'bg-gray-50 text-gray-600 hover:bg-gray-100 border border-gray-200'
+                      ? 'bg-ink-200 dark:bg-ink-600 text-ink-800 dark:text-ink-100 border-ink-500 dark:border-ink-400 ring-2 ring-ink-700 dark:ring-ink-300'
+                      : 'bg-ink-100 dark:bg-ink-700 text-ink-600 dark:text-ink-400 hover:bg-ink-200 dark:hover:bg-ink-600 border-ink-200 dark:border-ink-600'
                   ]"
                 >
                   {{ size }}
+                  <span v-if="settings.iconSizes.includes(size)" class="absolute -top-1 -right-1 w-4 h-4 bg-ink-700 dark:bg-ink-300 rounded-full flex items-center justify-center">
+                    <svg class="w-2.5 h-2.5 text-white dark:text-ink-800" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M5 13l4 4L19 7" />
+                    </svg>
+                  </span>
                 </button>
               </div>
-              <p class="text-xs text-gray-400">选择要包含在图标文件中的尺寸</p>
+              <p class="text-xs text-ink-400 dark:text-ink-500">选择要包含在图标文件中的尺寸</p>
             </div>
-            <div v-else class="text-center py-8 text-gray-400">
+            <div v-else class="text-center py-8 text-ink-400 dark:text-ink-500">
               <p class="text-sm">图标设置仅在选择 ICO 或 ICNS 格式时可用</p>
             </div>
           </div>
@@ -522,40 +542,40 @@
           <!-- EXIF 设置 -->
           <div v-if="activeTab === 'exif'" class="space-y-4">
             <div class="flex items-center gap-2 mb-2">
-              <input type="checkbox" id="editExif" v-model="settings.editExif" class="w-4 h-4 text-blue-500 rounded" />
-              <label for="editExif" class="text-sm font-medium text-gray-700">编辑 EXIF 信息</label>
+              <input type="checkbox" id="editExif" v-model="settings.editExif" class="w-4 h-4 text-ink-700 dark:text-ink-300 rounded" />
+              <label for="editExif" class="text-sm font-medium text-ink-700 dark:text-ink-300">编辑 EXIF 信息</label>
             </div>
 
             <div v-if="settings.editExif" class="space-y-3">
               <div>
-                <label class="block text-xs text-gray-500 mb-1">作者</label>
+                <label class="block text-xs text-ink-500 dark:text-ink-400 mb-1">作者</label>
                 <input
                   type="text"
                   v-model="settings.exifArtist"
                   placeholder="输入作者名称"
-                  class="w-full px-3 py-2 border border-gray-200 rounded-lg text-sm"
+                  class="w-full px-3 py-2 border border-ink-200 dark:border-ink-600 bg-white dark:bg-ink-700 text-ink-800 dark:text-ink-100 rounded-lg text-sm transition-colors duration-200"
                 />
               </div>
               <div>
-                <label class="block text-xs text-gray-500 mb-1">版权</label>
+                <label class="block text-xs text-ink-500 dark:text-ink-400 mb-1">版权</label>
                 <input
                   type="text"
                   v-model="settings.exifCopyright"
                   placeholder="© 2025 Your Name"
-                  class="w-full px-3 py-2 border border-gray-200 rounded-lg text-sm"
+                  class="w-full px-3 py-2 border border-ink-200 dark:border-ink-600 bg-white dark:bg-ink-700 text-ink-800 dark:text-ink-100 rounded-lg text-sm transition-colors duration-200"
                 />
               </div>
               <div>
-                <label class="block text-xs text-gray-500 mb-1">软件</label>
+                <label class="block text-xs text-ink-500 dark:text-ink-400 mb-1">软件</label>
                 <input
                   type="text"
                   v-model="settings.exifSoftware"
                   placeholder="生成软件名称"
-                  class="w-full px-3 py-2 border border-gray-200 rounded-lg text-sm"
+                  class="w-full px-3 py-2 border border-ink-200 dark:border-ink-600 bg-white dark:bg-ink-700 text-ink-800 dark:text-ink-100 rounded-lg text-sm transition-colors duration-200"
                 />
               </div>
             </div>
-            <div v-else class="text-center py-6 text-gray-400">
+            <div v-else class="text-center py-6 text-ink-400 dark:text-ink-500">
               <p class="text-sm">启用后可修改图片元数据</p>
             </div>
           </div>
@@ -563,26 +583,26 @@
           <!-- 裁剪设置 -->
           <div v-if="activeTab === 'crop'" class="space-y-4">
             <div class="flex items-center gap-2 mb-2">
-              <input type="checkbox" id="enableCrop" v-model="settings.enableCrop" class="w-4 h-4 text-blue-500 rounded" />
-              <label for="enableCrop" class="text-sm font-medium text-gray-700">启用裁剪</label>
+              <input type="checkbox" id="enableCrop" v-model="settings.enableCrop" class="w-4 h-4 text-ink-700 dark:text-ink-300 rounded" />
+              <label for="enableCrop" class="text-sm font-medium text-ink-700 dark:text-ink-300">启用裁剪</label>
             </div>
 
             <div v-if="settings.enableCrop" class="grid grid-cols-2 gap-3">
               <div>
-                <label class="block text-xs text-gray-500 mb-1">X 坐标</label>
-                <input type="number" v-model.number="settings.cropX" class="w-full px-3 py-2 border border-gray-200 rounded-lg text-sm" />
+                <label class="block text-xs text-ink-500 dark:text-ink-400 mb-1">X 坐标</label>
+                <input type="number" v-model.number="settings.cropX" class="w-full px-3 py-2 border border-ink-200 dark:border-ink-600 bg-white dark:bg-ink-700 text-ink-800 dark:text-ink-100 rounded-lg text-sm transition-colors duration-200" />
               </div>
               <div>
-                <label class="block text-xs text-gray-500 mb-1">Y 坐标</label>
-                <input type="number" v-model.number="settings.cropY" class="w-full px-3 py-2 border border-gray-200 rounded-lg text-sm" />
+                <label class="block text-xs text-ink-500 dark:text-ink-400 mb-1">Y 坐标</label>
+                <input type="number" v-model.number="settings.cropY" class="w-full px-3 py-2 border border-ink-200 dark:border-ink-600 bg-white dark:bg-ink-700 text-ink-800 dark:text-ink-100 rounded-lg text-sm transition-colors duration-200" />
               </div>
               <div>
-                <label class="block text-xs text-gray-500 mb-1">宽度</label>
-                <input type="number" v-model.number="settings.cropWidth" class="w-full px-3 py-2 border border-gray-200 rounded-lg text-sm" />
+                <label class="block text-xs text-ink-500 dark:text-ink-400 mb-1">宽度</label>
+                <input type="number" v-model.number="settings.cropWidth" class="w-full px-3 py-2 border border-ink-200 dark:border-ink-600 bg-white dark:bg-ink-700 text-ink-800 dark:text-ink-100 rounded-lg text-sm transition-colors duration-200" />
               </div>
               <div>
-                <label class="block text-xs text-gray-500 mb-1">高度</label>
-                <input type="number" v-model.number="settings.cropHeight" class="w-full px-3 py-2 border border-gray-200 rounded-lg text-sm" />
+                <label class="block text-xs text-ink-500 dark:text-ink-400 mb-1">高度</label>
+                <input type="number" v-model.number="settings.cropHeight" class="w-full px-3 py-2 border border-ink-200 dark:border-ink-600 bg-white dark:bg-ink-700 text-ink-800 dark:text-ink-100 rounded-lg text-sm transition-colors duration-200" />
               </div>
             </div>
           </div>

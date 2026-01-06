@@ -140,16 +140,22 @@ const shortcuts = [
 </script>
 
 <template>
-  <div class="min-h-screen bg-gradient-to-br from-gray-50 via-gray-100 to-gray-50">
-    <!-- 顶部导航栏 -->
-    <header class="sticky top-0 z-50 bg-white/80 backdrop-blur-lg border-b border-gray-200/50 shadow-sm">
+  <div class="min-h-screen bg-ink-50 ink-paper-bg relative">
+    <!-- 水墨渐变装饰层 -->
+    <div class="fixed inset-0 pointer-events-none ink-wash-gradient"></div>
+    
+    <!-- 顶部导航栏 - 水墨风格 -->
+    <header class="sticky top-0 z-50 bg-ink-50/90 dark:bg-ink-900/90 backdrop-blur-md border-b border-ink-200/50 dark:border-ink-700/50 relative">
+      <!-- 毛笔笔触风格底边装饰 -->
+      <div class="absolute bottom-0 left-0 right-0 h-px ink-brush-border"></div>
+      
       <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div class="flex items-center justify-between h-16">
-          <!-- Logo -->
+          <!-- Logo - 水墨风格 -->
           <div class="flex items-center gap-3">
-            <div class="w-10 h-10 bg-gradient-to-br from-primary-500 to-primary-600 rounded-xl flex items-center justify-center shadow-lg shadow-primary-500/30">
+            <div class="w-10 h-10 bg-ink-800 dark:bg-ink-100 rounded-lg flex items-center justify-center shadow-ink">
               <svg
-                class="w-6 h-6 text-white"
+                class="w-6 h-6 text-ink-50 dark:text-ink-900"
                 fill="none"
                 stroke="currentColor"
                 viewBox="0 0 24 24"
@@ -163,20 +169,20 @@ const shortcuts = [
               </svg>
             </div>
             <div>
-              <h1 class="text-lg font-bold text-gray-900">图片转换器</h1>
-              <p class="text-xs text-gray-500 hidden sm:block">纯前端处理，保护隐私</p>
+              <h1 class="text-lg font-serif font-semibold text-ink-900 dark:text-ink-100 tracking-wide">图片转换器</h1>
+              <p class="text-xs text-ink-500 dark:text-ink-400 hidden sm:block">纯前端处理，保护隐私</p>
             </div>
           </div>
 
-          <!-- Tab 切换 -->
-          <div class="flex bg-gray-100 rounded-xl p-1">
+          <!-- Tab 切换 - 水墨风格 -->
+          <div class="flex bg-ink-100 dark:bg-ink-800 rounded-lg p-1">
             <button
               @click="activeTab = 'image'"
               :class="[
-                'px-4 py-2 rounded-lg text-sm font-medium transition-all duration-200 flex items-center gap-2',
+                'px-4 py-2 rounded-md text-sm font-medium transition-all duration-300 flex items-center gap-2',
                 activeTab === 'image'
-                  ? 'bg-white text-gray-900 shadow-md'
-                  : 'text-gray-600 hover:text-gray-900'
+                  ? 'bg-ink-50 dark:bg-ink-700 text-ink-900 dark:text-ink-100 shadow-ink'
+                  : 'text-ink-600 dark:text-ink-400 hover:text-ink-900 dark:hover:text-ink-200'
               ]"
             >
               <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -187,10 +193,10 @@ const shortcuts = [
             <button
               @click="activeTab = 'ofd'"
               :class="[
-                'px-4 py-2 rounded-lg text-sm font-medium transition-all duration-200 flex items-center gap-2',
+                'px-4 py-2 rounded-md text-sm font-medium transition-all duration-300 flex items-center gap-2',
                 activeTab === 'ofd'
-                  ? 'bg-white text-gray-900 shadow-md'
-                  : 'text-gray-600 hover:text-gray-900'
+                  ? 'bg-ink-50 dark:bg-ink-700 text-ink-900 dark:text-ink-100 shadow-ink'
+                  : 'text-ink-600 dark:text-ink-400 hover:text-ink-900 dark:hover:text-ink-200'
               ]"
             >
               <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -200,21 +206,21 @@ const shortcuts = [
             </button>
           </div>
 
-          <!-- 功能特性标签 - 简化 -->
-          <div class="hidden md:flex items-center gap-3 text-xs text-gray-400">
+          <!-- 功能特性标签 - 水墨风格 -->
+          <div class="hidden md:flex items-center gap-3 text-xs text-ink-400 dark:text-ink-500">
             <span>免费</span>
-            <span>·</span>
+            <span class="text-ink-300 dark:text-ink-600">·</span>
             <span>本地处理</span>
-            <span>·</span>
+            <span class="text-ink-300 dark:text-ink-600">·</span>
             <span>开源</span>
           </div>
 
-          <!-- 工具按钮 -->
+          <!-- 工具按钮 - 水墨风格 -->
           <div class="flex items-center gap-2">
             <!-- 快捷键按钮 -->
             <button
               @click="showShortcuts = true"
-              class="p-2 text-gray-500 hover:text-gray-700 hover:bg-gray-100 dark:text-gray-400 dark:hover:text-gray-200 dark:hover:bg-gray-700 rounded-lg transition-colors"
+              class="p-2 text-ink-500 hover:text-ink-700 hover:bg-ink-100 dark:text-ink-400 dark:hover:text-ink-200 dark:hover:bg-ink-700 rounded-md transition-all duration-300"
               title="快捷键 (Ctrl + /)"
             >
               <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -225,13 +231,13 @@ const shortcuts = [
             <!-- 历史记录按钮 -->
             <button
               @click="showHistory = true"
-              class="p-2 text-gray-500 hover:text-gray-700 hover:bg-gray-100 dark:text-gray-400 dark:hover:text-gray-200 dark:hover:bg-gray-700 rounded-lg transition-colors relative"
+              class="p-2 text-ink-500 hover:text-ink-700 hover:bg-ink-100 dark:text-ink-400 dark:hover:text-ink-200 dark:hover:bg-ink-700 rounded-md transition-all duration-300 relative"
               title="历史记录 (Ctrl + H)"
             >
               <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
               </svg>
-              <span v-if="history.length > 0" class="absolute -top-1 -right-1 w-4 h-4 bg-primary-500 text-white text-xs rounded-full flex items-center justify-center">
+              <span v-if="history.length > 0" class="absolute -top-1 -right-1 w-4 h-4 bg-vermillion-500 text-white text-xs rounded-full flex items-center justify-center">
                 {{ history.length > 9 ? '9+' : history.length }}
               </span>
             </button>
@@ -241,7 +247,7 @@ const shortcuts = [
               href="https://github.com/Gary-zy/imageConversion"
               target="_blank"
               rel="noopener noreferrer"
-              class="p-2 text-gray-500 hover:text-gray-700 hover:bg-gray-100 dark:text-gray-400 dark:hover:text-gray-200 dark:hover:bg-gray-700 rounded-lg transition-colors"
+              class="p-2 text-ink-500 hover:text-ink-700 hover:bg-ink-100 dark:text-ink-400 dark:hover:text-ink-200 dark:hover:bg-ink-700 rounded-md transition-all duration-300"
               title="GitHub 仓库 - 欢迎 Star ⭐"
             >
               <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
@@ -252,7 +258,7 @@ const shortcuts = [
             <!-- 深色模式切换 -->
             <button
               @click="toggleDarkMode"
-              class="p-2 text-gray-500 hover:text-gray-700 hover:bg-gray-100 dark:text-gray-400 dark:hover:text-gray-200 dark:hover:bg-gray-700 rounded-lg transition-colors"
+              class="p-2 text-ink-500 hover:text-ink-700 hover:bg-ink-100 dark:text-ink-400 dark:hover:text-ink-200 dark:hover:bg-ink-700 rounded-md transition-all duration-300"
               title="切换深色模式 (D)"
             >
               <svg v-if="isDarkMode" class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -268,34 +274,34 @@ const shortcuts = [
     </header>
 
     <!-- 主要内容区 -->
-    <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+    <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 relative z-10">
       <template v-if="activeTab === 'image'">
         <div class="space-y-6">
-          <!-- 顶部统计信息 -->
+          <!-- 顶部统计信息 - 水墨风格 -->
           <div
             v-if="files.length > 0"
-            class="bg-gradient-to-r from-primary-500 to-primary-600 rounded-2xl p-6 text-white shadow-lg shadow-primary-500/30"
+            class="bg-ink-800 dark:bg-ink-100 rounded-lg p-6 text-ink-50 dark:text-ink-900 shadow-ink-lg"
           >
             <div class="flex flex-wrap items-center justify-between gap-4">
               <div class="flex items-center gap-4">
-                <div class="w-12 h-12 bg-white/20 backdrop-blur rounded-xl flex items-center justify-center">
+                <div class="w-12 h-12 bg-ink-700 dark:bg-ink-200 rounded-lg flex items-center justify-center">
                   <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
                   </svg>
                 </div>
                 <div>
-                  <p class="text-2xl font-bold">{{ files.length }}</p>
-                  <p class="text-white/80 text-sm">已添加文件</p>
+                  <p class="text-2xl font-serif font-bold">{{ files.length }}</p>
+                  <p class="text-ink-300 dark:text-ink-600 text-sm">已添加文件</p>
                 </div>
               </div>
               <div class="flex gap-8">
                 <div class="text-center">
                   <p class="text-lg font-semibold">{{ completedFiles.length }}</p>
-                  <p class="text-white/70 text-xs">已完成</p>
+                  <p class="text-ink-400 dark:text-ink-500 text-xs">已完成</p>
                 </div>
                 <div class="text-center">
                   <p class="text-lg font-semibold">{{ files.length - completedFiles.length }}</p>
-                  <p class="text-white/70 text-xs">待转换</p>
+                  <p class="text-ink-400 dark:text-ink-500 text-xs">待转换</p>
                 </div>
                 <div class="text-center">
                   <p class="text-lg font-semibold">
@@ -312,7 +318,7 @@ const shortcuts = [
                         : 0
                     }}%
                   </p>
-                  <p class="text-white/70 text-xs">平均压缩</p>
+                  <p class="text-ink-400 dark:text-ink-500 text-xs">平均压缩</p>
                 </div>
               </div>
             </div>
@@ -338,7 +344,7 @@ const shortcuts = [
 
               <!-- 预览区域 -->
               <section v-if="files.length === 1">
-                <h2 class="text-sm font-medium text-gray-700 mb-3">预览对比</h2>
+                <h2 class="text-sm font-medium text-ink-700 dark:text-ink-300 mb-3">预览对比</h2>
                 <ImagePreview :file="files[0]" />
               </section>
             </div>
@@ -350,18 +356,18 @@ const shortcuts = [
                 <AdvancedSettings />
               </section>
 
-              <!-- 操作按钮 -->
-              <div v-if="files.length > 0" class="bg-white rounded-2xl border border-gray-200 shadow-sm p-6 space-y-3">
-                <h3 class="font-semibold text-gray-800 mb-4">操作</h3>
+              <!-- 操作按钮 - 水墨风格 -->
+              <div v-if="files.length > 0" class="bg-ink-50 dark:bg-ink-800 rounded-lg border border-ink-200 dark:border-ink-700 shadow-ink p-6 space-y-3">
+                <h3 class="font-serif font-semibold text-ink-800 dark:text-ink-100 mb-4">操作</h3>
 
                 <button
                   @click="handleConvertAll"
                   :disabled="!hasFilesToConvert || isConverting"
                   :class="[
-                    'w-full py-3 px-4 rounded-xl font-semibold transition-all duration-200 flex items-center justify-center gap-2',
+                    'w-full py-3 px-4 rounded-lg font-semibold transition-all duration-300 flex items-center justify-center gap-2 border-2',
                     hasFilesToConvert && !isConverting
-                      ? 'bg-gradient-to-r from-primary-500 to-primary-600 text-white shadow-lg shadow-primary-500/30 hover:shadow-xl hover:scale-[1.02] active:scale-[0.98]'
-                      : 'bg-gray-100 text-gray-400 cursor-not-allowed'
+                      ? 'bg-ink-800 hover:bg-ink-900 dark:bg-ink-100 dark:hover:bg-ink-200 text-white dark:text-ink-900 border-ink-800 dark:border-ink-100 shadow-ink-md hover:shadow-ink-lg active:scale-[0.98]'
+                      : 'bg-ink-100 dark:bg-ink-700 text-ink-400 dark:text-ink-500 border-ink-200 dark:border-ink-600 cursor-not-allowed'
                   ]"
                 >
                   <template v-if="isConverting">
@@ -382,7 +388,7 @@ const shortcuts = [
                 <button
                   v-if="completedFiles.length > 1"
                   @click="handleDownloadAll"
-                  class="w-full py-3 px-4 rounded-xl font-semibold bg-gradient-to-r from-green-500 to-emerald-500 text-white shadow-lg shadow-green-500/30 hover:shadow-xl hover:scale-[1.02] active:scale-[0.98] transition-all duration-200 flex items-center justify-center gap-2"
+                  class="w-full py-3 px-4 rounded-md font-semibold bg-bamboo-500 hover:bg-bamboo-600 text-white shadow-ink-md hover:shadow-ink-lg active:scale-[0.98] transition-all duration-300 flex items-center justify-center gap-2"
                 >
                   <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" />
@@ -392,7 +398,7 @@ const shortcuts = [
 
                 <button
                   @click="clearFiles"
-                  class="w-full py-3 px-4 rounded-xl font-medium text-gray-600 hover:text-red-600 hover:bg-red-50 transition-all duration-200 flex items-center justify-center gap-2"
+                  class="w-full py-3 px-4 rounded-md font-medium text-ink-600 dark:text-ink-400 hover:text-vermillion-500 hover:bg-vermillion-50 dark:hover:bg-vermillion-900/20 transition-all duration-300 flex items-center justify-center gap-2"
                 >
                   <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
@@ -401,25 +407,25 @@ const shortcuts = [
                 </button>
               </div>
 
-              <!-- 使用提示 -->
-              <div class="bg-gradient-to-br from-amber-50 to-orange-50 rounded-2xl border border-amber-200 p-4">
-                <h4 class="font-semibold text-amber-800 mb-2 flex items-center gap-2">
+              <!-- 使用提示 - 水墨风格 -->
+              <div class="bg-ink-100 dark:bg-ink-800 rounded-lg border border-ink-200 dark:border-ink-700 p-4">
+                <h4 class="font-serif font-semibold text-ink-800 dark:text-ink-200 mb-2 flex items-center gap-2">
                   <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z" />
                   </svg>
                   使用提示
                 </h4>
-                <ul class="text-sm text-amber-700 space-y-1">
+                <ul class="text-sm text-ink-600 dark:text-ink-400 space-y-1">
                   <li class="flex items-start gap-2">
-                    <span class="text-amber-500">•</span>
+                    <span class="text-ink-400 dark:text-ink-500">•</span>
                     支持拖拽、点击或 Ctrl+V 粘贴上传
                   </li>
                   <li class="flex items-start gap-2">
-                    <span class="text-amber-500">•</span>
+                    <span class="text-ink-400 dark:text-ink-500">•</span>
                     可批量处理多张图片
                   </li>
                   <li class="flex items-start gap-2">
-                    <span class="text-amber-500">•</span>
+                    <span class="text-ink-400 dark:text-ink-500">•</span>
                     所有转换在浏览器本地完成
                   </li>
                 </ul>
@@ -434,137 +440,175 @@ const shortcuts = [
       </template>
     </main>
 
-    <!-- Footer - 简化 -->
-    <footer class="mt-16 py-6">
+    <!-- Footer - 水墨风格 -->
+    <footer class="mt-16 py-6 relative z-10">
       <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <p class="text-center text-xs text-gray-400">
+        <p class="text-center text-xs text-ink-400 dark:text-ink-500">
           所有处理均在浏览器本地完成，不会上传任何文件
         </p>
       </div>
     </footer>
 
-    <!-- 历史记录弹窗 -->
+    <!-- 历史记录弹窗 - 水墨风格 -->
     <Teleport to="body">
-      <div v-if="showHistory" class="fixed inset-0 z-50 flex items-center justify-center p-4">
-        <!-- 遮罩层 -->
-        <div class="absolute inset-0 bg-black/50 backdrop-blur-sm" @click="showHistory = false"></div>
+      <Transition
+        enter-active-class="transition-all duration-300 ease-out"
+        leave-active-class="transition-all duration-200 ease-in"
+        enter-from-class="opacity-0"
+        enter-to-class="opacity-100"
+        leave-from-class="opacity-100"
+        leave-to-class="opacity-0"
+      >
+        <div v-if="showHistory" class="fixed inset-0 z-50 flex items-center justify-center p-4">
+          <!-- 遮罩层 - 墨色晕染 -->
+          <div class="absolute inset-0 bg-ink-900/60 dark:bg-ink-950/80 backdrop-blur-sm" @click="showHistory = false"></div>
 
-        <!-- 弹窗内容 -->
-        <div class="relative bg-white dark:bg-gray-800 rounded-2xl shadow-2xl max-w-2xl w-full max-h-[80vh] overflow-hidden border border-gray-200 dark:border-gray-700">
-          <!-- 头部 -->
-          <div class="flex items-center justify-between px-6 py-4 border-b border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-gray-800/80">
-            <h3 class="text-lg font-semibold text-gray-800 dark:text-white">转换历史</h3>
-            <div class="flex items-center gap-2">
-              <button
-                v-if="history.length > 0"
-                @click="clearHistory"
-                class="px-3 py-1 text-sm text-red-500 hover:bg-red-50 dark:hover:bg-red-900/20 rounded-lg transition-colors"
-              >
-                清空
-              </button>
-              <button
-                @click="showHistory = false"
-                class="p-2 text-gray-400 hover:text-gray-600 dark:hover:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-lg transition-colors"
-              >
-                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
-                </svg>
-              </button>
-            </div>
-          </div>
-
-          <!-- 历史列表 -->
-          <div class="overflow-y-auto max-h-[60vh]">
-            <div v-if="history.length === 0" class="py-12 text-center text-gray-500 dark:text-gray-400">
-              <svg class="w-12 h-12 mx-auto mb-4 text-gray-300 dark:text-gray-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
-              </svg>
-              <p>暂无转换记录</p>
-              <p class="text-sm mt-2">转换完成后会在这里显示记录</p>
-            </div>
-
-            <ul v-else class="divide-y divide-gray-100 dark:divide-gray-700">
-              <li
-                v-for="item in history"
-                :key="item.id"
-                class="px-6 py-4 hover:bg-gray-50 dark:hover:bg-gray-700/50 transition-colors"
-              >
-                <div class="flex items-center justify-between">
-                  <div class="flex-1 min-w-0">
-                    <p class="font-medium text-gray-800 dark:text-white truncate">{{ item.originalName }}</p>
-                    <div class="flex items-center gap-3 mt-1 text-sm text-gray-500 dark:text-gray-400">
-                      <span>{{ item.targetFormat.toUpperCase() }}</span>
-                      <span>{{ formatTime(item.timestamp) }}</span>
-                    </div>
-                  </div>
-                  <div class="flex items-center gap-4 text-sm">
-                    <span class="text-gray-500 dark:text-gray-400">
-                      {{ formatFileSize(item.originalSize) }} → {{ formatFileSize(item.convertedSize) }}
-                    </span>
-                    <button
-                      @click="removeHistoryItem(item.id)"
-                      class="p-1 text-gray-400 hover:text-red-500 transition-colors"
-                      title="删除"
-                    >
-                      <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
-                      </svg>
-                    </button>
-                  </div>
+          <!-- 弹窗内容 -->
+          <Transition
+            appear
+            enter-active-class="transition-all duration-300 ease-out"
+            leave-active-class="transition-all duration-200 ease-in"
+            enter-from-class="opacity-0 scale-95 translate-y-4"
+            enter-to-class="opacity-100 scale-100 translate-y-0"
+            leave-from-class="opacity-100 scale-100 translate-y-0"
+            leave-to-class="opacity-0 scale-95 translate-y-4"
+          >
+            <div v-if="showHistory" class="relative bg-ink-50 dark:bg-ink-800 rounded-lg shadow-ink-lg max-w-2xl w-full max-h-[80vh] overflow-hidden border border-ink-200 dark:border-ink-700">
+              <!-- 头部 -->
+              <div class="flex items-center justify-between px-6 py-4 border-b border-ink-200 dark:border-ink-700 bg-ink-100/50 dark:bg-ink-700/50">
+                <h3 class="text-lg font-serif font-semibold text-ink-800 dark:text-ink-100">转换历史</h3>
+                <div class="flex items-center gap-2">
+                  <button
+                    v-if="history.length > 0"
+                    @click="clearHistory"
+                    class="px-3 py-1 text-sm text-vermillion-500 hover:bg-vermillion-50 dark:hover:bg-vermillion-900/20 rounded-md transition-all duration-300"
+                  >
+                    清空
+                  </button>
+                  <button
+                    @click="showHistory = false"
+                    class="p-2 text-ink-400 hover:text-ink-600 dark:hover:text-ink-200 hover:bg-ink-100 dark:hover:bg-ink-700 rounded-md transition-all duration-300"
+                  >
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+                    </svg>
+                  </button>
                 </div>
-              </li>
-            </ul>
-          </div>
+              </div>
+
+              <!-- 历史列表 -->
+              <div class="overflow-y-auto max-h-[60vh]">
+                <div v-if="history.length === 0" class="py-12 text-center text-ink-500 dark:text-ink-400">
+                  <svg class="w-12 h-12 mx-auto mb-4 text-ink-300 dark:text-ink-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+                  </svg>
+                  <p>暂无转换记录</p>
+                  <p class="text-sm mt-2">转换完成后会在这里显示记录</p>
+                </div>
+
+                <ul v-else class="divide-y divide-ink-100 dark:divide-ink-700">
+                  <li
+                    v-for="item in history"
+                    :key="item.id"
+                    class="px-6 py-4 hover:bg-ink-100/50 dark:hover:bg-ink-700/50 transition-all duration-300"
+                  >
+                    <div class="flex items-center justify-between">
+                      <div class="flex-1 min-w-0">
+                        <p class="font-medium text-ink-800 dark:text-ink-100 truncate">{{ item.originalName }}</p>
+                        <div class="flex items-center gap-3 mt-1 text-sm text-ink-500 dark:text-ink-400">
+                          <span>{{ item.targetFormat.toUpperCase() }}</span>
+                          <span>{{ formatTime(item.timestamp) }}</span>
+                        </div>
+                      </div>
+                      <div class="flex items-center gap-4 text-sm">
+                        <span class="text-ink-500 dark:text-ink-400">
+                          {{ formatFileSize(item.originalSize) }} → {{ formatFileSize(item.convertedSize) }}
+                        </span>
+                        <button
+                          @click="removeHistoryItem(item.id)"
+                          class="p-1 text-ink-400 hover:text-vermillion-500 transition-all duration-300"
+                          title="删除"
+                        >
+                          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+                          </svg>
+                        </button>
+                      </div>
+                    </div>
+                  </li>
+                </ul>
+              </div>
+            </div>
+          </Transition>
         </div>
-      </div>
+      </Transition>
     </Teleport>
 
-    <!-- 快捷键弹窗 -->
+    <!-- 快捷键弹窗 - 水墨风格 -->
     <Teleport to="body">
-      <div v-if="showShortcuts" class="fixed inset-0 z-50 flex items-center justify-center p-4">
-        <!-- 遮罩层 -->
-        <div class="absolute inset-0 bg-black/50 backdrop-blur-sm" @click="showShortcuts = false"></div>
+      <Transition
+        enter-active-class="transition-all duration-300 ease-out"
+        leave-active-class="transition-all duration-200 ease-in"
+        enter-from-class="opacity-0"
+        enter-to-class="opacity-100"
+        leave-from-class="opacity-100"
+        leave-to-class="opacity-0"
+      >
+        <div v-if="showShortcuts" class="fixed inset-0 z-50 flex items-center justify-center p-4">
+          <!-- 遮罩层 - 墨色晕染 -->
+          <div class="absolute inset-0 bg-ink-900/60 dark:bg-ink-950/80 backdrop-blur-sm" @click="showShortcuts = false"></div>
 
-        <!-- 弹窗内容 -->
-        <div class="relative bg-white dark:bg-gray-800 rounded-2xl shadow-2xl max-w-md w-full overflow-hidden border border-gray-200 dark:border-gray-700">
-          <!-- 头部 -->
-          <div class="flex items-center justify-between px-6 py-4 border-b border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-gray-800/80">
-            <h3 class="text-lg font-semibold text-gray-800 dark:text-white">键盘快捷键</h3>
-            <button
-              @click="showShortcuts = false"
-              class="p-2 text-gray-400 hover:text-gray-600 dark:hover:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-lg transition-colors"
-            >
-              <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
-              </svg>
-            </button>
-          </div>
-
-          <!-- 快捷键列表 -->
-          <div class="p-6 space-y-4">
-            <div
-              v-for="shortcut in shortcuts"
-              :key="shortcut.key"
-              class="flex items-center justify-between"
-            >
-              <div>
-                <p class="font-medium text-gray-800 dark:text-white">{{ shortcut.action }}</p>
-                <p class="text-sm text-gray-500 dark:text-gray-400">{{ shortcut.description }}</p>
+          <!-- 弹窗内容 -->
+          <Transition
+            appear
+            enter-active-class="transition-all duration-300 ease-out"
+            leave-active-class="transition-all duration-200 ease-in"
+            enter-from-class="opacity-0 scale-95 translate-y-4"
+            enter-to-class="opacity-100 scale-100 translate-y-0"
+            leave-from-class="opacity-100 scale-100 translate-y-0"
+            leave-to-class="opacity-0 scale-95 translate-y-4"
+          >
+            <div v-if="showShortcuts" class="relative bg-ink-50 dark:bg-ink-800 rounded-lg shadow-ink-lg max-w-md w-full overflow-hidden border border-ink-200 dark:border-ink-700">
+              <!-- 头部 -->
+              <div class="flex items-center justify-between px-6 py-4 border-b border-ink-200 dark:border-ink-700 bg-ink-100/50 dark:bg-ink-700/50">
+                <h3 class="text-lg font-serif font-semibold text-ink-800 dark:text-ink-100">键盘快捷键</h3>
+                <button
+                  @click="showShortcuts = false"
+                  class="p-2 text-ink-400 hover:text-ink-600 dark:hover:text-ink-200 hover:bg-ink-100 dark:hover:bg-ink-700 rounded-md transition-all duration-300"
+                >
+                  <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+                  </svg>
+                </button>
               </div>
-              <kbd class="px-3 py-1 text-sm font-mono bg-gray-100 dark:bg-gray-700 rounded-lg text-gray-700 dark:text-gray-300 border border-gray-200 dark:border-gray-600">
-                {{ shortcut.key }}
-              </kbd>
-            </div>
-          </div>
 
-          <!-- 底部提示 -->
-          <div class="px-6 py-4 bg-gray-50 dark:bg-gray-700/50 border-t border-gray-100 dark:border-gray-700">
-            <p class="text-sm text-gray-500 dark:text-gray-400 text-center">
-              按 <kbd class="px-2 py-0.5 text-xs font-mono bg-gray-200 dark:bg-gray-600 rounded border border-gray-300 dark:border-gray-500 text-gray-700 dark:text-gray-300">Esc</kbd> 关闭此弹窗
-            </p>
-          </div>
+              <!-- 快捷键列表 -->
+              <div class="p-6 space-y-4">
+                <div
+                  v-for="shortcut in shortcuts"
+                  :key="shortcut.key"
+                  class="flex items-center justify-between"
+                >
+                  <div>
+                    <p class="font-medium text-ink-800 dark:text-ink-100">{{ shortcut.action }}</p>
+                    <p class="text-sm text-ink-500 dark:text-ink-400">{{ shortcut.description }}</p>
+                  </div>
+                  <kbd class="px-3 py-1 text-sm font-mono bg-ink-100 dark:bg-ink-700 rounded-md text-ink-700 dark:text-ink-300 border border-ink-200 dark:border-ink-600">
+                    {{ shortcut.key }}
+                  </kbd>
+                </div>
+              </div>
+
+              <!-- 底部提示 -->
+              <div class="px-6 py-4 bg-ink-100/50 dark:bg-ink-700/50 border-t border-ink-100 dark:border-ink-700">
+                <p class="text-sm text-ink-500 dark:text-ink-400 text-center">
+                  按 <kbd class="px-2 py-0.5 text-xs font-mono bg-ink-200 dark:bg-ink-600 rounded border border-ink-300 dark:border-ink-500 text-ink-700 dark:text-ink-300">Esc</kbd> 关闭此弹窗
+                </p>
+              </div>
+            </div>
+          </Transition>
         </div>
-      </div>
+      </Transition>
     </Teleport>
   </div>
 </template>

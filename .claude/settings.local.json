@@ -28,7 +28,8 @@
       "Bash(curl:*)",
       "Bash(grep:*)",
       "Bash(npx tailwindcss:*)",
-      "Bash(npm ls:*)"
+      "Bash(npm ls:*)",
+      "Skill(ui-ux-pro-max)"
     ]
   },
   "model": "opus",

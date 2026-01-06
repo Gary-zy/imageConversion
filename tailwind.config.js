@@ -70,6 +70,8 @@ export default {
     'grid-cols-1', 'grid-cols-2', 'grid-cols-3', 'grid-cols-4',
     'contents', 'table',
     'resize', 'appearance-none',
+    // Ring colors for ink wash style
+    'ring-2', 'ring-ink-700', 'ring-ink-300',
   ],
   theme: {
     extend: {
@@ -87,6 +89,44 @@ export default {
           900: '#1e3a8a',
           950: '#172554',
         },
+        // 水墨画风格颜色系统
+        ink: {
+          50: '#FDFBF7',   // 宣纸白
+          100: '#F5F0E8',  // 淡墨
+          200: '#E8E0D4',  // 浅墨
+          300: '#D4C9B8',  // 轻墨
+          400: '#A69B8A',  // 中墨
+          500: '#7A7062',  // 深墨
+          600: '#5C544A',  // 浓墨
+          700: '#3D3832',  // 重墨
+          800: '#2A2622',  // 焦墨
+          900: '#1A1A1A',  // 墨黑
+          950: '#0D0D0D',  // 极墨
+        },
+        vermillion: {
+          50: '#FEF2F2',
+          100: '#FEE2E2',
+          200: '#FECACA',
+          300: '#FCA5A5',
+          400: '#F87171',
+          500: '#C53030',  // 朱砂红
+          600: '#B91C1C',
+          700: '#991B1B',
+          800: '#7F1D1D',
+          900: '#450A0A',
+        },
+        bamboo: {
+          50: '#F0FDF4',
+          100: '#DCFCE7',
+          200: '#BBF7D0',
+          300: '#86EFAC',
+          400: '#4ADE80',
+          500: '#2F855A',  // 竹青
+          600: '#16A34A',
+          700: '#15803D',
+          800: '#166534',
+          900: '#14532D',
+        },
       },
       fontFamily: {
         sans: [
@@ -98,11 +138,29 @@ export default {
           'Arial',
           'sans-serif',
         ],
+        serif: [
+          '"Noto Serif SC"',
+          '"Source Han Serif SC"',
+          '"Songti SC"',
+          'Georgia',
+          'serif',
+        ],
       },
       boxShadow: {
         'primary': '0 4px 14px 0 rgba(59, 130, 246, 0.39)',
         'primary-lg': '0 10px 25px -5px rgba(59, 130, 246, 0.4), 0 8px 10px -6px rgba(59, 130, 246, 0.2)',
         'soft': '0 2px 15px -3px rgba(0, 0, 0, 0.07), 0 10px 20px -2px rgba(0, 0, 0, 0.04)',
+        // 水墨风格阴影
+        'ink': '0 2px 8px -2px rgba(26, 26, 26, 0.1), 0 4px 12px -4px rgba(26, 26, 26, 0.08)',
+        'ink-md': '0 4px 16px -4px rgba(26, 26, 26, 0.15), 0 8px 24px -8px rgba(26, 26, 26, 0.1)',
+        'ink-lg': '0 8px 32px -8px rgba(26, 26, 26, 0.2), 0 16px 48px -16px rgba(26, 26, 26, 0.15)',
+        'ink-dark': '0 2px 8px -2px rgba(0, 0, 0, 0.3), 0 4px 12px -4px rgba(0, 0, 0, 0.2)',
+      },
+      ringColor: {
+        ink: {
+          300: '#D4C9B8',
+          700: '#3D3832',
+        },
       },
       animation: {
         'fade-in': 'fadeIn 0.5s ease-out',
